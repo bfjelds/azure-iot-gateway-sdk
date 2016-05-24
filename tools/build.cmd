@@ -21,12 +21,14 @@ rem // default build options
 set build-config=Debug
 set build-platform=Win32
 set CMAKE_run_e2e_tests=OFF
+set enable_dotnet_binding=OFF
 
 :args-loop
 if "%1" equ "" goto args-done
 if "%1" equ "--config" goto arg-build-config
 if "%1" equ "--platform" goto arg-build-platform
 if "%1" equ "--run-e2e-tests" goto arg-run-e2e-tests
+if "%1" equ "--enable-dotnet-binding" goto arg-enable_dotnet_binding
 call :usage && exit /b 1
 
 :arg-build-config
@@ -44,6 +46,11 @@ goto args-continue
 :arg-run-e2e-tests
 set CMAKE_run_e2e_tests=ON
 goto args-continue
+
+:arg-enable_dotnet_binding
+set enable_dotnet_binding=ON
+goto args-continue
+
 
 :args-continue
 shift
