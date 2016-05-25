@@ -14,24 +14,17 @@
 #include "azure_c_shared_utility/iot_logging.h"
 #include "azure_c_shared_utility/lock.h"
 
-typedef struct DOTNET_HOST_CONFIG_TAG
-{
-    const char* dotnet_module_path;
-    const char* dotnet_module_entry_class;
-    const char* dotnet_module_args;
-}DOTNET_HOST_CONFIG;
-
 typedef struct DOTNET_HOST_HANDLE_DATA_TAG
 {
     MESSAGE_BUS_HANDLE          bus;
-    ICLRMetaHost                *pMetaHost;
-    ICLRRuntimeInfo             *pRuntimeInfo;
-    ICorRuntimeHost             *pCorRuntimeHost;
+    //ICLRMetaHost                *pMetaHost;
+    //ICLRRuntimeInfo             *pRuntimeInfo;
+    //ICorRuntimeHost             *pCorRuntimeHost;
 }DOTNET_HOST_HANDLE_DATA;
 
 static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* configuration)
 {
-    DOTNET_HANDLE_DATA* result;
+	DOTNET_HOST_HANDLE_DATA* result;
     if (
         (busHandle == NULL) /*configuration is not used*/
         )
@@ -41,14 +34,14 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
     }
     else
     {
-        result = malloc(sizeof(DOTNET_HANDLE_DATA));
+        result = malloc(sizeof(DOTNET_HOST_HANDLE_DATA));
         if(result == NULL)
         {
             LogError("unable to malloc");
         }
         else
         {
-            result->busHandle = busHandle;
+            result->bus = busHandle;
             //TODO: put here code to get the CLR Stuff. 
 
         }
@@ -65,7 +58,7 @@ static void DotNET_Receive(MODULE_HANDLE moduleHandle, MESSAGE_HANDLE messageHan
 static void DotNET_Destroy(MODULE_HANDLE module)
 {
     /*first stop the thread*/
-    DOTNET_HANDLE_DATA* handleData = module;
+	DOTNET_HOST_HANDLE_DATA* handleData = module;
   
     free(handleData);
 }
@@ -79,7 +72,7 @@ static const MODULE_APIS DOTNET_APIS_all =
 };
 
 #ifdef BUILD_MODULE_TYPE_STATIC
-MODULE_EXPORT const MODULE_APIS* MODULE_STATIC_GETAPIS(DOTNET_MODULE)(void)
+MODULE_EXPORT const MODULE_APIS* MODULE_STATIC_GETAPIS(DOTNET_HOST)(void)
 #else
 MODULE_EXPORT const MODULE_APIS* Module_GetAPIS(void)
 #endif

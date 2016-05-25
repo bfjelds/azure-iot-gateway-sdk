@@ -62,5 +62,6 @@ linkSharedUtil(dotnet_static)
 linkSharedUtil(dotnet_hl)
 linkSharedUtil(dotnet_hl_static)
 
-add_module_to_solution(dotnet)
+add_subdirectory(tests)
 
+add_module_to_solution(dotnet)

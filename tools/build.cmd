@@ -21,7 +21,7 @@ rem // default build options
 set build-config=Debug
 set build-platform=Win32
 set CMAKE_run_e2e_tests=OFF
-set enable_dotnet_binding=OFF
+set CMAKE_enable_dotnet_binding=OFF
 
 :args-loop
 if "%1" equ "" goto args-done
@@ -48,7 +48,7 @@ set CMAKE_run_e2e_tests=ON
 goto args-continue
 
 :arg-enable_dotnet_binding
-set enable_dotnet_binding=ON
+set CMAKE_enable_dotnet_binding=ON
 goto args-continue
 
 
@@ -91,7 +91,7 @@ mkdir %cmake-root%
 rem no error checking
 
 pushd %cmake-root%
-cmake -Drun_e2e_tests:BOOL=%CMAKE_run_e2e_tests% "%build-root%" "%build-root%"
+cmake -Drun_e2e_tests:BOOL=%CMAKE_run_e2e_tests% -Denable_dotnet_binding:BOOL=%CMAKE_enable_dotnet_binding% "%build-root%" "%build-root%"
 if not %errorlevel%==0 exit /b %errorlevel%
 
 msbuild /m /p:Configuration="%build-config%" /p:Platform="%build-platform%" azure_iot_gateway_sdk.sln
