@@ -16,7 +16,7 @@
 #include "message.h"
 #include "azure_c_shared_utility/constmap.h"
 #include "azure_c_shared_utility/map.h"
-//#include "messageproperties.h"
+
 
 static MICROMOCK_MUTEX_HANDLE g_testByTest;
 static MICROMOCK_GLOBAL_SEMAPHORE_HANDLE g_dllByDll;

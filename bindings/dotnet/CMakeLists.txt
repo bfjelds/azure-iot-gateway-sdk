@@ -4,7 +4,7 @@
 cmake_minimum_required(VERSION 2.8.11)
 
 set(dotnet_sources
-	./src/dotnet.c
+	./src/dotnet.cpp
 )
 
 set(dotnet_headers

@@ -4,3 +4,5 @@
 cmake_minimum_required(VERSION 2.8.11)
 
 add_subdirectory(dotnet_hl_unittests)
+
+add_subdirectory(dotnet_unittests)
