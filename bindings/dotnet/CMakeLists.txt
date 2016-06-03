@@ -38,6 +38,7 @@ set(dotnet_hl_static_headers
 
 include_directories(./inc)
 include_directories(${GW_INC})
+include_directories(${IOTHUB_CLIENT_INC_FOLDER})
 
 #this builds the dotnet dynamic library
 add_library(dotnet MODULE ${dotnet_sources}  ${dotnet_headers})

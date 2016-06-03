@@ -16,15 +16,9 @@
 
 #include "parson.h"
 
-typedef struct DOTNET_HL_HANDLE_DATA_TAG
-{
-	MESSAGE_BUS_HANDLE      bus;
-	MODULE_HANDLE           module_handle;
-}DOTNET_HL_HANDLE_DATA;
-
 static MODULE_HANDLE DotNET_HL_Create(MESSAGE_BUS_HANDLE busHandle, const void* configuration)
 {
-	DOTNET_HL_HANDLE_DATA* result;
+	MODULE_HANDLE result;
 	/* Codes_SRS_DOTNET_HL_04_001: [ If busHandle is NULL then DotNET_HL_Create shall fail and return NULL. ]  */
 	/* Codes_SRS_DOTNET_HL_04_002: [ If configuration is NULL then DotNET_HL_Create shall fail and return NULL. ] */
 	if (
@@ -82,31 +76,20 @@ static MODULE_HANDLE DotNET_HL_Create(MESSAGE_BUS_HANDLE busHandle, const void* 
 						}
 						else
 						{
-							result = (DOTNET_HL_HANDLE_DATA*)malloc(sizeof(DOTNET_HL_HANDLE_DATA));
-							if (result == NULL)
-							{
-								LogError("malloc failed");
-							}
-							else
-							{
 								DOTNET_HOST_CONFIG dotNet_config;
 								dotNet_config.dotnet_module_path = dotnet_module_path_string;
 								dotNet_config.dotnet_module_entry_class = dotnet_module_entry_class_string;
 								dotNet_config.dotnet_module_args = dotnet_module_args_string;
 
-								result->bus = busHandle;
 								/* Codes_SRS_DOTNET_HL_04_007: [ DotNET_HL_Create shall pass busHandle and const char* configuration (dotnet_module_path, dotnet_module_entry_class and dotnet_module_args as string) to DotNET_Create. ] */
-								result->module_handle = MODULE_STATIC_GETAPIS(DOTNET_HOST)()->Module_Create(busHandle, (const void*)&dotNet_config);
+								result = MODULE_STATIC_GETAPIS(DOTNET_HOST)()->Module_Create(busHandle, (const void*)&dotNet_config);
 
 								/* Codes_SRS_DOTNET_HL_04_008: [ If DotNET_Create succeeds then DotNET_HL_Create shall succeed and return a non-NULL value. ] */
-								if (result->module_handle == NULL)
+								if (result == NULL)
 								{
 									LogError("DotNET_Host_Create failed.");
-									free(result);
 									/* Codes_SRS_DOTNET_HL_04_009: [ If DotNET_Create fails then DotNET_HL_Create shall fail and return NULL. ] */
-									result = NULL;
 								}
-							}
 						}
 					}
 				}
@@ -122,9 +105,7 @@ static void DotNET_HL_Destroy(MODULE_HANDLE module)
 	if (module != NULL)
 	{
 		/* Codes_SRS_DOTNET_HL_04_011: [ DotNET_HL_Destroy shall destroy all used resources for the associated module. ] */
-		DOTNET_HL_HANDLE_DATA* handle_data = (DOTNET_HL_HANDLE_DATA*)module;
-		MODULE_STATIC_GETAPIS(DOTNET_HOST)()->Module_Destroy(handle_data->module_handle);
-		free(handle_data);
+		MODULE_STATIC_GETAPIS(DOTNET_HOST)()->Module_Destroy(module);
 	}
 	else
 	{
@@ -135,6 +116,7 @@ static void DotNET_HL_Destroy(MODULE_HANDLE module)
 
 static void DotNET_HL_Receive(MODULE_HANDLE moduleHandle, MESSAGE_HANDLE messageHandle)
 {
+
 	/* Codes_SRS_DOTNET_HL_04_010: [ DotNET_HL_Receive shall pass the received parameters to the underlying DotNET Host Module's _Receive function. ] */
     MODULE_STATIC_GETAPIS(DOTNET_HOST)()->Module_Receive(moduleHandle, messageHandle);
 }
