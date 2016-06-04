@@ -536,13 +536,14 @@ static void DotNET_Destroy(MODULE_HANDLE module)
 
 	delete(handleData);
 }
-bool dotnetHost_PublishMessage(MESSAGE_BUS_HANDLE bus, const unsigned char* source, int32_t size)
+
+bool dotnetHost_PublishMessage(MESSAGE_BUS_HANDLE bus, MODULE_HANDLE sourceModule, const unsigned char* source, int32_t size)
 {
 	//Create a MEssage from Byte Array. 
 	//Publish this message on the bus. 
 	MESSAGE_HANDLE msgHandle = Message_CreateFromByteArray(source, size);
 
-	MESSAGE_BUS_RESULT msgBusResult = MessageBus_Publish(bus, msgHandle);
+	MESSAGE_BUS_RESULT msgBusResult = MessageBus_Publish(bus, sourceModule, msgHandle);
 
 	if (msgBusResult != MESSAGE_BUS_OK)
 	{

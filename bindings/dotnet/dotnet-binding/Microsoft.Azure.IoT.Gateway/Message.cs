@@ -11,9 +11,9 @@ namespace Microsoft.Azure.IoT.Gateway
     /// <summary> Object that represents a message on the message bus. </summary>
     public class Message
     {
-        public byte[] Content { set; get; }
+        private byte[] Content { set; get; }
 
-        public Dictionary<string, string> Properties { set; get; }
+        private Dictionary<string, string> Properties { set; get; }
 
         public Message()
         {
