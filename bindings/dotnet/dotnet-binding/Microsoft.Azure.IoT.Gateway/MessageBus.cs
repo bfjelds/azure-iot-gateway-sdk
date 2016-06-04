@@ -24,6 +24,10 @@ namespace Microsoft.Azure.IoT.Gateway
         /// <returns></returns>
         public void Publish(Message message)
         {
+            byte[] messageObjetct = message.ToByteArray();
+
+            nativeDotNetHostWrapper.dotnetHost_PublishMessage((IntPtr)this.msgBusHandle, messageObjetct, messageObjetct.Length);
         }
+
     }
 }

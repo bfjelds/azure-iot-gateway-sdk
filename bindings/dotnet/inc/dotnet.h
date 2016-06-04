@@ -20,6 +20,9 @@ typedef struct DOTNET_HOST_CONFIG_TAG
 
 MODULE_EXPORT const MODULE_APIS* MODULE_STATIC_GETAPIS(DOTNET_HOST)(void);
 
+extern __declspec(dllexport) bool dotnetHost_PublishMessage(MESSAGE_BUS_HANDLE bus, const unsigned char* source, int32_t size);
+
+
 #ifdef __cplusplus
 }
 #endif

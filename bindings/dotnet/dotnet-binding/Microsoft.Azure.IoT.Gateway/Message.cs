@@ -96,7 +96,8 @@ namespace Microsoft.Azure.IoT.Gateway
 
         public Message(string content, Dictionary<string, string> properties)
         {
-            Console.WriteLine("This is Message Constructor received from string and properties.");
+            this.Content = System.Text.Encoding.UTF8.GetBytes(content);
+            this.Properties = properties;
         }
 
         public Message(Message message)

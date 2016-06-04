@@ -536,6 +536,23 @@ static void DotNET_Destroy(MODULE_HANDLE module)
 
 	delete(handleData);
 }
+bool dotnetHost_PublishMessage(MESSAGE_BUS_HANDLE bus, const unsigned char* source, int32_t size)
+{
+	//Create a MEssage from Byte Array. 
+	//Publish this message on the bus. 
+	MESSAGE_HANDLE msgHandle = Message_CreateFromByteArray(source, size);
+
+	MESSAGE_BUS_RESULT msgBusResult = MessageBus_Publish(bus, msgHandle);
+
+	if (msgBusResult != MESSAGE_BUS_OK)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
 
 
 static const MODULE_APIS DOTNET_APIS_all =
@@ -544,6 +561,8 @@ static const MODULE_APIS DOTNET_APIS_all =
 	DotNET_Destroy,
 	DotNET_Receive
 };
+
+
 
 #ifdef BUILD_MODULE_TYPE_STATIC
 MODULE_EXPORT const MODULE_APIS* MODULE_STATIC_GETAPIS(DOTNET_HOST)(void)
