@@ -13,6 +13,12 @@
 #include "azure_c_shared_utility/iot_logging.h"
 #include "azure_c_shared_utility/base64.h"
 
+#ifdef UNDER_TEST
+#define SafeArrayCreateVector myTest_SafeArrayCreateVector
+#define SafeArrayPutElement   myTest_SafeArrayPutElement
+#define SafeArrayDestroy      myTest_SafeArrayDestroy
+#endif
+
 #include "dotnet.h"
 
 #include <new>
@@ -263,125 +269,125 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
 				}
 				else
 				{
-					//SAFEARRAY *psaAzureIoTGatewayMessageBusConstructorArgs = SafeArrayCreateVector(VT_VARIANT, 0, 1);
-					//LONG index = 0;
-					//variant_t msgBus((long long)result->bus);
-					//variant_t vtAzureIoTGatewayMessageBusObject;
+					SAFEARRAY *psaAzureIoTGatewayMessageBusConstructorArgs = SafeArrayCreateVector(VT_VARIANT, 0, 1);
+					LONG index = 0;
+					variant_t msgBus((long long)result->bus);
+					variant_t vtAzureIoTGatewayMessageBusObject;
 
-					//if (psaAzureIoTGatewayMessageBusConstructorArgs == NULL)
-					//{
-					//	LogError("Failed to create Safe Array. ");
-					//	(result->pCorRuntimeHost)->Release();
-					//	result->pCorRuntimeHost = NULL;
-					//	(result->pRuntimeInfo)->Release();
-					//	result->pRuntimeInfo = NULL;
-					//	(result->pMetaHost)->Release();
-					//	result->pMetaHost = NULL;
-					//	delete(result);
-					//	result = NULL;
-					//}
-				//	else if (FAILED(hr = SafeArrayPutElement(psaAzureIoTGatewayMessageBusConstructorArgs, &index, &msgBus)))
-				//	{
-				//		LogError("Adding Element on the safe array failed. w/hr 0x%08lx\n", hr);
-				//		(result->pCorRuntimeHost)->Release();
-				//		result->pCorRuntimeHost = NULL;
-				//		(result->pRuntimeInfo)->Release();
-				//		result->pRuntimeInfo = NULL;
-				//		(result->pMetaHost)->Release();
-				//		result->pMetaHost = NULL;
-				//		delete(result);
-				//		result = NULL;
-				//	}
-				//	else if (FAILED(hr = result->spAzureIoTGatewayAssembly->CreateInstance_3(bstrAzureIoTGatewayMessageBusClassName, true, static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public), NULL, psaAzureIoTGatewayMessageBusConstructorArgs, NULL, NULL, &vtAzureIoTGatewayMessageBusObject)))
-				//	{
-				//		LogError("Creating an instance of Message Bus failed with hr 0x%08lx\n", hr);
-				//		(result->pCorRuntimeHost)->Release();
-				//		result->pCorRuntimeHost = NULL;
-				//		(result->pRuntimeInfo)->Release();
-				//		result->pRuntimeInfo = NULL;
-				//		(result->pMetaHost)->Release();
-				//		result->pMetaHost = NULL;
-				//		delete(result);
-				//		result = NULL;
-				//	}
-				//	//Create an instance of the Client Module (Default Blank Constructor will be called. 
-				//	else if (FAILED(hr = spClientModuleAssembly->CreateInstance(bstrClientModuleClassName, &result->vtClientModuleObject)))
-				//	{
-				//		LogError("Creating an instance of Client Class failed with hr 0x%08lx\n", hr);
-				//		(result->pCorRuntimeHost)->Release();
-				//		result->pCorRuntimeHost = NULL;
-				//		(result->pRuntimeInfo)->Release();
-				//		result->pRuntimeInfo = NULL;
-				//		(result->pMetaHost)->Release();
-				//		result->pMetaHost = NULL;
-				//		delete(result);
-				//		result = NULL;
-				//	}
-				//	else
-				//	{
-				//		SAFEARRAY *psaClientModuleCreateArgs = SafeArrayCreateVector(VT_VARIANT, 0, 2);
-				//		index = 0;
-				//		if (psaClientModuleCreateArgs == NULL)
-				//		{
-				//			LogError("Failed to create Safe Array. ");
-				//			(result->pCorRuntimeHost)->Release();
-				//			result->pCorRuntimeHost = NULL;
-				//			(result->pRuntimeInfo)->Release();
-				//			result->pRuntimeInfo = NULL;
-				//			(result->pMetaHost)->Release();
-				//			result->pMetaHost = NULL;
-				//			delete(result);
-				//			result = NULL;
-				//		}
-				//		else if (FAILED(hr = SafeArrayPutElement(psaClientModuleCreateArgs, &index, &vtAzureIoTGatewayMessageBusObject)))
-				//		{
-				//			LogError("Adding Element on the safe array failed. w/hr 0x%08lx\n", hr);
-				//			(result->pCorRuntimeHost)->Release();
-				//			result->pCorRuntimeHost = NULL;
-				//			(result->pRuntimeInfo)->Release();
-				//			result->pRuntimeInfo = NULL;
-				//			(result->pMetaHost)->Release();
-				//			result->pMetaHost = NULL;
-				//			delete(result);
-				//			result = NULL;
-				//		}
-				//		else
-				//		{
-				//			variant_t vtdotNetArgsArg(dotNetConfig->dotnet_module_args);
-				//			bstr_t bstrCreateClientMethodName(L"Create");
-				//			variant_t vt_Empty;
-				//			index = 1;
+					if (psaAzureIoTGatewayMessageBusConstructorArgs == NULL)
+					{
+						LogError("Failed to create Safe Array. ");
+						(result->pCorRuntimeHost)->Release();
+						result->pCorRuntimeHost = NULL;
+						(result->pRuntimeInfo)->Release();
+						result->pRuntimeInfo = NULL;
+						(result->pMetaHost)->Release();
+						result->pMetaHost = NULL;
+						delete(result);
+						result = NULL;
+					}
+					else if (FAILED(hr = SafeArrayPutElement(psaAzureIoTGatewayMessageBusConstructorArgs, &index, &msgBus)))
+					{
+						LogError("Adding Element on the safe array failed. w/hr 0x%08lx\n", hr);
+						(result->pCorRuntimeHost)->Release();
+						result->pCorRuntimeHost = NULL;
+						(result->pRuntimeInfo)->Release();
+						result->pRuntimeInfo = NULL;
+						(result->pMetaHost)->Release();
+						result->pMetaHost = NULL;
+						delete(result);
+						result = NULL;
+					}
+					else if (FAILED(hr = result->spAzureIoTGatewayAssembly->CreateInstance_3(bstrAzureIoTGatewayMessageBusClassName, true, static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public), NULL, psaAzureIoTGatewayMessageBusConstructorArgs, NULL, NULL, &vtAzureIoTGatewayMessageBusObject)))
+					{
+						LogError("Creating an instance of Message Bus failed with hr 0x%08lx\n", hr);
+						(result->pCorRuntimeHost)->Release();
+						result->pCorRuntimeHost = NULL;
+						(result->pRuntimeInfo)->Release();
+						result->pRuntimeInfo = NULL;
+						(result->pMetaHost)->Release();
+						result->pMetaHost = NULL;
+						delete(result);
+						result = NULL;
+					}
+					//Create an instance of the Client Module (Default Blank Constructor will be called. 
+					else if (FAILED(hr = spClientModuleAssembly->CreateInstance(bstrClientModuleClassName, &result->vtClientModuleObject)))
+					{
+						LogError("Creating an instance of Client Class failed with hr 0x%08lx\n", hr);
+						(result->pCorRuntimeHost)->Release();
+						result->pCorRuntimeHost = NULL;
+						(result->pRuntimeInfo)->Release();
+						result->pRuntimeInfo = NULL;
+						(result->pMetaHost)->Release();
+						result->pMetaHost = NULL;
+						delete(result);
+						result = NULL;
+					}
+					else
+					{
+						SAFEARRAY *psaClientModuleCreateArgs = SafeArrayCreateVector(VT_VARIANT, 0, 2);
+						index = 0;
+						if (psaClientModuleCreateArgs == NULL)
+						{
+							LogError("Failed to create Safe Array. ");
+							(result->pCorRuntimeHost)->Release();
+							result->pCorRuntimeHost = NULL;
+							(result->pRuntimeInfo)->Release();
+							result->pRuntimeInfo = NULL;
+							(result->pMetaHost)->Release();
+							result->pMetaHost = NULL;
+							delete(result);
+							result = NULL;
+						}
+						else if (FAILED(hr = SafeArrayPutElement(psaClientModuleCreateArgs, &index, &vtAzureIoTGatewayMessageBusObject)))
+						{
+							LogError("Adding Element on the safe array failed. w/hr 0x%08lx\n", hr);
+							(result->pCorRuntimeHost)->Release();
+							result->pCorRuntimeHost = NULL;
+							(result->pRuntimeInfo)->Release();
+							result->pRuntimeInfo = NULL;
+							(result->pMetaHost)->Release();
+							result->pMetaHost = NULL;
+							delete(result);
+							result = NULL;
+						}
+						else
+						{
+							variant_t vtdotNetArgsArg(dotNetConfig->dotnet_module_args);
+							bstr_t bstrCreateClientMethodName(L"Create");
+							variant_t vt_Empty;
+							index = 1;
 
-				//			if (FAILED(hr = SafeArrayPutElement(psaClientModuleCreateArgs, &index, &vtdotNetArgsArg)))
-				//			{
-				//				LogError("Adding Element on the safe array failed. w/hr 0x%08lx\n", hr);
-				//				(result->pCorRuntimeHost)->Release();
-				//				result->pCorRuntimeHost = NULL;
-				//				(result->pRuntimeInfo)->Release();
-				//				result->pRuntimeInfo = NULL;
-				//				(result->pMetaHost)->Release();
-				//				result->pMetaHost = NULL;
-				//				delete(result);
-				//				result = NULL;
-				//			}
-				//			else if (FAILED(hr = result->spClientModuleType->InvokeMember_3(bstrCreateClientMethodName, static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public | BindingFlags_InvokeMethod), NULL, result->vtClientModuleObject, psaClientModuleCreateArgs, &vt_Empty)))
-				//			{
-				//				LogError("Failed to invoke Create Method with hr 0x%08lx\n", hr);
-				//				(result->pCorRuntimeHost)->Release();
-				//				result->pCorRuntimeHost = NULL;
-				//				(result->pRuntimeInfo)->Release();
-				//				result->pRuntimeInfo = NULL;
-				//				(result->pMetaHost)->Release();
-				//				result->pMetaHost = NULL;
-				//				delete(result);
-				//				result = NULL;
-				//			}
-				//			SafeArrayDestroy(psaClientModuleCreateArgs);
-				//			psaClientModuleCreateArgs = NULL;
-				//		}
-				//		SafeArrayDestroy(psaAzureIoTGatewayMessageBusConstructorArgs);
-				//		psaAzureIoTGatewayMessageBusConstructorArgs = NULL;
-				//	}
+							if (FAILED(hr = SafeArrayPutElement(psaClientModuleCreateArgs, &index, &vtdotNetArgsArg)))
+							{
+								LogError("Adding Element on the safe array failed. w/hr 0x%08lx\n", hr);
+								(result->pCorRuntimeHost)->Release();
+								result->pCorRuntimeHost = NULL;
+								(result->pRuntimeInfo)->Release();
+								result->pRuntimeInfo = NULL;
+								(result->pMetaHost)->Release();
+								result->pMetaHost = NULL;
+								delete(result);
+								result = NULL;
+							}
+							else if (FAILED(hr = result->spClientModuleType->InvokeMember_3(bstrCreateClientMethodName, static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public | BindingFlags_InvokeMethod), NULL, result->vtClientModuleObject, psaClientModuleCreateArgs, &vt_Empty)))
+							{
+								LogError("Failed to invoke Create Method with hr 0x%08lx\n", hr);
+								(result->pCorRuntimeHost)->Release();
+								result->pCorRuntimeHost = NULL;
+								(result->pRuntimeInfo)->Release();
+								result->pRuntimeInfo = NULL;
+								(result->pMetaHost)->Release();
+								result->pMetaHost = NULL;
+								delete(result);
+								result = NULL;
+							}
+							SafeArrayDestroy(psaClientModuleCreateArgs);
+							psaClientModuleCreateArgs = NULL;
+						}
+						SafeArrayDestroy(psaAzureIoTGatewayMessageBusConstructorArgs);
+						psaAzureIoTGatewayMessageBusConstructorArgs = NULL;
+					}
 				}
 			}
 		}

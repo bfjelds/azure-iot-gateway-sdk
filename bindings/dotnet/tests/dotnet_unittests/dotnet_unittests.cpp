@@ -118,6 +118,17 @@ std::ostream& operator<<(std::ostream& left, const IID leIID)
 	return left;
 }
 
+//Needed to add for Invoke member. VARIANT, but not using on this Unit Test. (Not evaluating this as arg)
+std::ostream& operator<<(std::ostream& left, const VARIANT rVARIANT)
+{
+	return left;
+}
+
+bool operator==(_In_ const VARIANT lhs, _In_ const VARIANT rhs)
+{
+	return true;
+}
+
 void* operator new  (std::size_t count)
 {
 	void* result2;
@@ -686,7 +697,6 @@ class myAppDomain : public _AppDomain
 			 };
 };
 
-
 //struct __declspec(uuid("17156360-2f1a-384a-bc52-fde93c215c5b"))
 class myAssemblyClass : public _Assembly 
 {
@@ -694,110 +704,110 @@ class myAssemblyClass : public _Assembly
 	// Raw methods provided by interface
 	//
 
-	virtual HRESULT __stdcall get_ToString(
+	HRESULT __stdcall get_ToString(
 		/*[out,retval]*/ BSTR * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall Equals(
+	HRESULT __stdcall Equals(
 		/*[in]*/ VARIANT other,
 		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetHashCode(
+	HRESULT __stdcall GetHashCode(
 		/*[out,retval]*/ long * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetType(
+	HRESULT __stdcall GetType(
 		/*[out,retval]*/ struct _Type * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall get_CodeBase(
+	HRESULT __stdcall get_CodeBase(
 		/*[out,retval]*/ BSTR * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall get_EscapedCodeBase(
+	HRESULT __stdcall get_EscapedCodeBase(
 		/*[out,retval]*/ BSTR * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetName(
+	HRESULT __stdcall GetName(
 		/*[out,retval]*/ struct _AssemblyName * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetName_2(
+	HRESULT __stdcall GetName_2(
 		/*[in]*/ VARIANT_BOOL copiedName,
 		/*[out,retval]*/ struct _AssemblyName * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall get_FullName(
+	HRESULT __stdcall get_FullName(
 		/*[out,retval]*/ BSTR * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall get_EntryPoint(
+	HRESULT __stdcall get_EntryPoint(
 		/*[out,retval]*/ struct _MethodInfo * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetType_2(
+	HRESULT __stdcall GetType_2(
 		/*[in]*/ BSTR name,
 		/*[out,retval]*/ struct _Type * * pRetVal);
-	virtual HRESULT __stdcall GetType_3(
+	HRESULT __stdcall GetType_3(
 		/*[in]*/ BSTR name,
 		/*[in]*/ VARIANT_BOOL throwOnError,
 		/*[out,retval]*/ struct _Type * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetExportedTypes(
+	HRESULT __stdcall GetExportedTypes(
 		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetTypes(
+	HRESULT __stdcall GetTypes(
 		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetManifestResourceStream(
+	HRESULT __stdcall GetManifestResourceStream(
 		/*[in]*/ struct _Type * Type,
 		/*[in]*/ BSTR name,
 		/*[out,retval]*/ struct _Stream * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetManifestResourceStream_2(
+	HRESULT __stdcall GetManifestResourceStream_2(
 		/*[in]*/ BSTR name,
 		/*[out,retval]*/ struct _Stream * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetFile(
+	HRESULT __stdcall GetFile(
 		/*[in]*/ BSTR name,
 		/*[out,retval]*/ struct _FileStream * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetFiles(
+	HRESULT __stdcall GetFiles(
 		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetFiles_2(
+	HRESULT __stdcall GetFiles_2(
 		/*[in]*/ VARIANT_BOOL getResourceModules,
 		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetManifestResourceNames(
+	HRESULT __stdcall GetManifestResourceNames(
 		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetManifestResourceInfo(
+	HRESULT __stdcall GetManifestResourceInfo(
 		/*[in]*/ BSTR resourceName,
 		/*[out,retval]*/ struct _ManifestResourceInfo * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall get_Location(
+	HRESULT __stdcall get_Location(
 		/*[out,retval]*/ BSTR * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall get_Evidence(
+	HRESULT __stdcall get_Evidence(
 		/*[out,retval]*/ struct _Evidence * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetCustomAttributes(
+	HRESULT __stdcall GetCustomAttributes(
 		/*[in]*/ struct _Type * attributeType,
 		/*[in]*/ VARIANT_BOOL inherit,
 		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetCustomAttributes_2(
+	HRESULT __stdcall GetCustomAttributes_2(
 		/*[in]*/ VARIANT_BOOL inherit,
 		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall IsDefined(
+	HRESULT __stdcall IsDefined(
 		/*[in]*/ struct _Type * attributeType,
 		/*[in]*/ VARIANT_BOOL inherit,
 		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetObjectData(
+	HRESULT __stdcall GetObjectData(
 		/*[in]*/ struct _SerializationInfo * info,
 		/*[in]*/ struct StreamingContext Context){  return S_OK; } ;
-	virtual HRESULT __stdcall add_ModuleResolve(
+	HRESULT __stdcall add_ModuleResolve(
 		/*[in]*/ struct _ModuleResolveEventHandler * value){  return S_OK; } ;
-	virtual HRESULT __stdcall remove_ModuleResolve(
+	HRESULT __stdcall remove_ModuleResolve(
 		/*[in]*/ struct _ModuleResolveEventHandler * value){  return S_OK; } ;
-	virtual HRESULT __stdcall GetType_4(
+	HRESULT __stdcall GetType_4(
 		/*[in]*/ BSTR name,
 		/*[in]*/ VARIANT_BOOL throwOnError,
 		/*[in]*/ VARIANT_BOOL ignoreCase,
 		/*[out,retval]*/ struct _Type * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetSatelliteAssembly(
+	HRESULT __stdcall GetSatelliteAssembly(
 		/*[in]*/ struct _CultureInfo * culture,
 		/*[out,retval]*/ struct _Assembly * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetSatelliteAssembly_2(
+	HRESULT __stdcall GetSatelliteAssembly_2(
 		/*[in]*/ struct _CultureInfo * culture,
 		/*[in]*/ struct _Version * Version,
 		/*[out,retval]*/ struct _Assembly * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall LoadModule(
+	HRESULT __stdcall LoadModule(
 		/*[in]*/ BSTR moduleName,
 		/*[in]*/ SAFEARRAY * rawModule,
 		/*[out,retval]*/ struct _Module * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall LoadModule_2(
+	HRESULT __stdcall LoadModule_2(
 		/*[in]*/ BSTR moduleName,
 		/*[in]*/ SAFEARRAY * rawModule,
 		/*[in]*/ SAFEARRAY * rawSymbolStore,
 		/*[out,retval]*/ struct _Module * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall CreateInstance(
+	HRESULT __stdcall CreateInstance(
 		/*[in]*/ BSTR typeName,
-		/*[out,retval]*/ VARIANT * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall CreateInstance_2(
+		/*[out,retval]*/ VARIANT * pRetVal);
+	HRESULT __stdcall CreateInstance_2(
 		/*[in]*/ BSTR typeName,
 		/*[in]*/ VARIANT_BOOL ignoreCase,
 		/*[out,retval]*/ VARIANT * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall CreateInstance_3(
+	HRESULT __stdcall CreateInstance_3(
 		/*[in]*/ BSTR typeName,
 		/*[in]*/ VARIANT_BOOL ignoreCase,
 		/*[in]*/ enum BindingFlags bindingAttr,
@@ -805,42 +815,42 @@ class myAssemblyClass : public _Assembly
 		/*[in]*/ SAFEARRAY * args,
 		/*[in]*/ struct _CultureInfo * culture,
 		/*[in]*/ SAFEARRAY * activationAttributes,
-		/*[out,retval]*/ VARIANT * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetLoadedModules(
+		/*[out,retval]*/ VARIANT * pRetVal);
+	HRESULT __stdcall GetLoadedModules(
 		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetLoadedModules_2(
+	HRESULT __stdcall GetLoadedModules_2(
 		/*[in]*/ VARIANT_BOOL getResourceModules,
 		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetModules(
+	HRESULT __stdcall GetModules(
 		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetModules_2(
+	HRESULT __stdcall GetModules_2(
 		/*[in]*/ VARIANT_BOOL getResourceModules,
 		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetModule(
+	HRESULT __stdcall GetModule(
 		/*[in]*/ BSTR name,
 		/*[out,retval]*/ struct _Module * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall GetReferencedAssemblies(
+	HRESULT __stdcall GetReferencedAssemblies(
 		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
-	virtual HRESULT __stdcall get_GlobalAssemblyCache(
+	HRESULT __stdcall get_GlobalAssemblyCache(
 		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
 
 	//From IDispatch:
-	virtual HRESULT STDMETHODCALLTYPE GetTypeInfoCount(
+	HRESULT STDMETHODCALLTYPE GetTypeInfoCount(
 		/* [out] */ __RPC__out UINT *pctinfo){  return S_OK; } ;
 
-	virtual HRESULT STDMETHODCALLTYPE GetTypeInfo(
+	HRESULT STDMETHODCALLTYPE GetTypeInfo(
 		/* [in] */ UINT iTInfo,
 		/* [in] */ LCID lcid,
 		/* [out] */ __RPC__deref_out_opt ITypeInfo **ppTInfo){  return S_OK; } ;
 
-	virtual HRESULT STDMETHODCALLTYPE GetIDsOfNames(
+	HRESULT STDMETHODCALLTYPE GetIDsOfNames(
 		/* [in] */ __RPC__in REFIID riid,
 		/* [size_is][in] */ __RPC__in_ecount_full(cNames) LPOLESTR *rgszNames,
 		/* [range][in] */ __RPC__in_range(0, 16384) UINT cNames,
 		/* [in] */ LCID lcid,
 		/* [size_is][out] */ __RPC__out_ecount_full(cNames) DISPID *rgDispId){  return S_OK; } ;
 
-	virtual /* [local] */ HRESULT STDMETHODCALLTYPE Invoke(
+	/* [local] */ HRESULT STDMETHODCALLTYPE Invoke(
 		/* [annotation][in] */
 		_In_  DISPID dispIdMember,
 		/* [annotation][in] */
@@ -877,7 +887,492 @@ class myAssemblyClass : public _Assembly
 	};
 };
 
+class myBinder : _Binder
+{
+	//
+	// Raw methods provided by interface
+	//
 
+	HRESULT __stdcall get_ToString(
+		/*[out,retval]*/ BSTR * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall Equals(
+		/*[in]*/ VARIANT obj,
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetHashCode(
+		/*[out,retval]*/ long * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetType(
+		/*[out,retval]*/ struct _Type * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall BindToMethod(
+		/*[in]*/ enum BindingFlags bindingAttr,
+		/*[in]*/ SAFEARRAY * match,
+		/*[in,out]*/ SAFEARRAY * * args,
+		/*[in]*/ SAFEARRAY * modifiers,
+		/*[in]*/ struct _CultureInfo * culture,
+		/*[in]*/ SAFEARRAY * names,
+		/*[out]*/ VARIANT * state,
+		/*[out,retval]*/ struct _MethodBase * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall BindToField(
+		/*[in]*/ enum BindingFlags bindingAttr,
+		/*[in]*/ SAFEARRAY * match,
+		/*[in]*/ VARIANT value,
+		/*[in]*/ struct _CultureInfo * culture,
+		/*[out,retval]*/ struct _FieldInfo * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall SelectMethod(
+		/*[in]*/ enum BindingFlags bindingAttr,
+		/*[in]*/ SAFEARRAY * match,
+		/*[in]*/ SAFEARRAY * types,
+		/*[in]*/ SAFEARRAY * modifiers,
+		/*[out,retval]*/ struct _MethodBase * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall SelectProperty(
+		/*[in]*/ enum BindingFlags bindingAttr,
+		/*[in]*/ SAFEARRAY * match,
+		/*[in]*/ struct _Type * returnType,
+		/*[in]*/ SAFEARRAY * indexes,
+		/*[in]*/ SAFEARRAY * modifiers,
+		/*[out,retval]*/ struct _PropertyInfo * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall ChangeType(
+		/*[in]*/ VARIANT value,
+		/*[in]*/ struct _Type * Type,
+		/*[in]*/ struct _CultureInfo * culture,
+		/*[out,retval]*/ VARIANT * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall ReorderArgumentArray(
+		/*[in,out]*/ SAFEARRAY * * args,
+		/*[in]*/ VARIANT state){  return S_OK; } ;
+
+	//From IDispatch:
+	HRESULT STDMETHODCALLTYPE GetTypeInfoCount(
+		/* [out] */ __RPC__out UINT *pctinfo) {
+		return S_OK;
+	};
+
+	HRESULT STDMETHODCALLTYPE GetTypeInfo(
+		/* [in] */ UINT iTInfo,
+		/* [in] */ LCID lcid,
+		/* [out] */ __RPC__deref_out_opt ITypeInfo **ppTInfo) {
+		return S_OK;
+	};
+
+	HRESULT STDMETHODCALLTYPE GetIDsOfNames(
+		/* [in] */ __RPC__in REFIID riid,
+		/* [size_is][in] */ __RPC__in_ecount_full(cNames) LPOLESTR *rgszNames,
+		/* [range][in] */ __RPC__in_range(0, 16384) UINT cNames,
+		/* [in] */ LCID lcid,
+		/* [size_is][out] */ __RPC__out_ecount_full(cNames) DISPID *rgDispId) {
+		return S_OK;
+	};
+
+	/* [local] */ HRESULT STDMETHODCALLTYPE Invoke(
+		/* [annotation][in] */
+		_In_  DISPID dispIdMember,
+		/* [annotation][in] */
+		_In_  REFIID riid,
+		/* [annotation][in] */
+		_In_  LCID lcid,
+		/* [annotation][in] */
+		_In_  WORD wFlags,
+		/* [annotation][out][in] */
+		_In_  DISPPARAMS *pDispParams,
+		/* [annotation][out] */
+		_Out_opt_  VARIANT *pVarResult,
+		/* [annotation][out] */
+		_Out_opt_  EXCEPINFO *pExcepInfo,
+		/* [annotation][out] */
+		_Out_opt_  UINT *puArgErr) {
+		return S_OK;
+	};
+
+	//From IUnkonwn
+	HRESULT __stdcall QueryInterface(
+		/* [in] */ REFIID riid,
+		/* [iid_is][out] */ _COM_Outptr_ void __RPC_FAR *__RPC_FAR *ppvObject)
+	{
+		return S_OK;
+	};
+
+	ULONG __stdcall AddRef(void)
+	{
+		return S_OK;
+	};
+
+	ULONG __stdcall Release(void)
+	{
+		return S_OK;
+	};
+};
+
+//struct __declspec(uuid("bca8b44d-aad6-3a86-8ab7-03349f4f2da2"))
+class my_Type: public _Type
+{
+	//
+	// Raw methods provided by interface
+	//
+
+	HRESULT __stdcall GetTypeInfoCount(
+		/*[out]*/ unsigned long * pcTInfo){  return S_OK; } ;
+	HRESULT __stdcall GetTypeInfo(
+		/*[in]*/ unsigned long iTInfo,
+		/*[in]*/ unsigned long lcid,
+		/*[in]*/ long ppTInfo){  return S_OK; } ;
+	HRESULT __stdcall GetIDsOfNames(
+		/*[in]*/ GUID * riid,
+		/*[in]*/ long rgszNames,
+		/*[in]*/ unsigned long cNames,
+		/*[in]*/ unsigned long lcid,
+		/*[in]*/ long rgDispId){  return S_OK; } ;
+	HRESULT __stdcall Invoke(
+		/*[in]*/ unsigned long dispIdMember,
+		/*[in]*/ GUID * riid,
+		/*[in]*/ unsigned long lcid,
+		/*[in]*/ short wFlags,
+		/*[in]*/ long pDispParams,
+		/*[in]*/ long pVarResult,
+		/*[in]*/ long pExcepInfo,
+		/*[in]*/ long puArgErr){  return S_OK; } ;
+	HRESULT __stdcall get_ToString(
+		/*[out,retval]*/ BSTR * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall Equals(
+		/*[in]*/ VARIANT other,
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetHashCode(
+		/*[out,retval]*/ long * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetType(
+		/*[out,retval]*/ struct _Type * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_MemberType(
+		/*[out,retval]*/ enum MemberTypes * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_name(
+		/*[out,retval]*/ BSTR * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_DeclaringType(
+		/*[out,retval]*/ struct _Type * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_ReflectedType(
+		/*[out,retval]*/ struct _Type * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetCustomAttributes(
+		/*[in]*/ struct _Type * attributeType,
+		/*[in]*/ VARIANT_BOOL inherit,
+		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetCustomAttributes_2(
+		/*[in]*/ VARIANT_BOOL inherit,
+		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall IsDefined(
+		/*[in]*/ struct _Type * attributeType,
+		/*[in]*/ VARIANT_BOOL inherit,
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_Guid(
+		/*[out,retval]*/ GUID * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_Module(
+		/*[out,retval]*/ struct _Module * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_Assembly(
+		/*[out,retval]*/ struct _Assembly * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_TypeHandle(
+		/*[out,retval]*/ struct RuntimeTypeHandle * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_FullName(
+		/*[out,retval]*/ BSTR * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_Namespace(
+		/*[out,retval]*/ BSTR * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_AssemblyQualifiedName(
+		/*[out,retval]*/ BSTR * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetArrayRank(
+		/*[out,retval]*/ long * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_BaseType(
+		/*[out,retval]*/ struct _Type * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetConstructors(
+		/*[in]*/ enum BindingFlags bindingAttr,
+		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetInterface(
+		/*[in]*/ BSTR name,
+		/*[in]*/ VARIANT_BOOL ignoreCase,
+		/*[out,retval]*/ struct _Type * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetInterfaces(
+		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall FindInterfaces(
+		/*[in]*/ struct _TypeFilter * filter,
+		/*[in]*/ VARIANT filterCriteria,
+		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetEvent(
+		/*[in]*/ BSTR name,
+		/*[in]*/ enum BindingFlags bindingAttr,
+		/*[out,retval]*/ struct _EventInfo * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetEvents(
+		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetEvents_2(
+		/*[in]*/ enum BindingFlags bindingAttr,
+		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetNestedTypes(
+		/*[in]*/ enum BindingFlags bindingAttr,
+		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetNestedType(
+		/*[in]*/ BSTR name,
+		/*[in]*/ enum BindingFlags bindingAttr,
+		/*[out,retval]*/ struct _Type * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetMember(
+		/*[in]*/ BSTR name,
+		/*[in]*/ enum MemberTypes Type,
+		/*[in]*/ enum BindingFlags bindingAttr,
+		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetDefaultMembers(
+		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall FindMembers(
+		/*[in]*/ enum MemberTypes MemberType,
+		/*[in]*/ enum BindingFlags bindingAttr,
+		/*[in]*/ struct _MemberFilter * filter,
+		/*[in]*/ VARIANT filterCriteria,
+		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetElementType(
+		/*[out,retval]*/ struct _Type * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall IsSubclassOf(
+		/*[in]*/ struct _Type * c,
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall IsInstanceOfType(
+		/*[in]*/ VARIANT o,
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall IsAssignableFrom(
+		/*[in]*/ struct _Type * c,
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetInterfaceMap(
+		/*[in]*/ struct _Type * interfaceType,
+		/*[out,retval]*/ struct InterfaceMapping * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetMethod(
+		/*[in]*/ BSTR name,
+		/*[in]*/ enum BindingFlags bindingAttr,
+		/*[in]*/ struct _Binder * Binder,
+		/*[in]*/ SAFEARRAY * types,
+		/*[in]*/ SAFEARRAY * modifiers,
+		/*[out,retval]*/ struct _MethodInfo * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetMethod_2(
+		/*[in]*/ BSTR name,
+		/*[in]*/ enum BindingFlags bindingAttr,
+		/*[out,retval]*/ struct _MethodInfo * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetMethods(
+		/*[in]*/ enum BindingFlags bindingAttr,
+		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetField(
+		/*[in]*/ BSTR name,
+		/*[in]*/ enum BindingFlags bindingAttr,
+		/*[out,retval]*/ struct _FieldInfo * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetFields(
+		/*[in]*/ enum BindingFlags bindingAttr,
+		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetProperty(
+		/*[in]*/ BSTR name,
+		/*[in]*/ enum BindingFlags bindingAttr,
+		/*[out,retval]*/ struct _PropertyInfo * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetProperty_2(
+		/*[in]*/ BSTR name,
+		/*[in]*/ enum BindingFlags bindingAttr,
+		/*[in]*/ struct _Binder * Binder,
+		/*[in]*/ struct _Type * returnType,
+		/*[in]*/ SAFEARRAY * types,
+		/*[in]*/ SAFEARRAY * modifiers,
+		/*[out,retval]*/ struct _PropertyInfo * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetProperties(
+		/*[in]*/ enum BindingFlags bindingAttr,
+		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetMember_2(
+		/*[in]*/ BSTR name,
+		/*[in]*/ enum BindingFlags bindingAttr,
+		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetMembers(
+		/*[in]*/ enum BindingFlags bindingAttr,
+		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall InvokeMember(
+		/*[in]*/ BSTR name,
+		/*[in]*/ enum BindingFlags invokeAttr,
+		/*[in]*/ struct _Binder * Binder,
+		/*[in]*/ VARIANT Target,
+		/*[in]*/ SAFEARRAY * args,
+		/*[in]*/ SAFEARRAY * modifiers,
+		/*[in]*/ struct _CultureInfo * culture,
+		/*[in]*/ SAFEARRAY * namedParameters,
+		/*[out,retval]*/ VARIANT * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_UnderlyingSystemType(
+		/*[out,retval]*/ struct _Type * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall InvokeMember_2(
+		/*[in]*/ BSTR name,
+		/*[in]*/ enum BindingFlags invokeAttr,
+		/*[in]*/ struct _Binder * Binder,
+		/*[in]*/ VARIANT Target,
+		/*[in]*/ SAFEARRAY * args,
+		/*[in]*/ struct _CultureInfo * culture,
+		/*[out,retval]*/ VARIANT * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall InvokeMember_3(
+		/*[in]*/ BSTR name,
+		/*[in]*/ enum BindingFlags invokeAttr,
+		/*[in]*/ struct _Binder * Binder,
+		/*[in]*/ VARIANT Target,
+		/*[in]*/ SAFEARRAY * args,
+		/*[out,retval]*/ VARIANT * pRetVal);
+	HRESULT __stdcall GetConstructor(
+		/*[in]*/ enum BindingFlags bindingAttr,
+		/*[in]*/ struct _Binder * Binder,
+		/*[in]*/ enum CallingConventions callConvention,
+		/*[in]*/ SAFEARRAY * types,
+		/*[in]*/ SAFEARRAY * modifiers,
+		/*[out,retval]*/ struct _ConstructorInfo * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetConstructor_2(
+		/*[in]*/ enum BindingFlags bindingAttr,
+		/*[in]*/ struct _Binder * Binder,
+		/*[in]*/ SAFEARRAY * types,
+		/*[in]*/ SAFEARRAY * modifiers,
+		/*[out,retval]*/ struct _ConstructorInfo * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetConstructor_3(
+		/*[in]*/ SAFEARRAY * types,
+		/*[out,retval]*/ struct _ConstructorInfo * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetConstructors_2(
+		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_TypeInitializer(
+		/*[out,retval]*/ struct _ConstructorInfo * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetMethod_3(
+		/*[in]*/ BSTR name,
+		/*[in]*/ enum BindingFlags bindingAttr,
+		/*[in]*/ struct _Binder * Binder,
+		/*[in]*/ enum CallingConventions callConvention,
+		/*[in]*/ SAFEARRAY * types,
+		/*[in]*/ SAFEARRAY * modifiers,
+		/*[out,retval]*/ struct _MethodInfo * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetMethod_4(
+		/*[in]*/ BSTR name,
+		/*[in]*/ SAFEARRAY * types,
+		/*[in]*/ SAFEARRAY * modifiers,
+		/*[out,retval]*/ struct _MethodInfo * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetMethod_5(
+		/*[in]*/ BSTR name,
+		/*[in]*/ SAFEARRAY * types,
+		/*[out,retval]*/ struct _MethodInfo * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetMethod_6(
+		/*[in]*/ BSTR name,
+		/*[out,retval]*/ struct _MethodInfo * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetMethods_2(
+		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetField_2(
+		/*[in]*/ BSTR name,
+		/*[out,retval]*/ struct _FieldInfo * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetFields_2(
+		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetInterface_2(
+		/*[in]*/ BSTR name,
+		/*[out,retval]*/ struct _Type * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetEvent_2(
+		/*[in]*/ BSTR name,
+		/*[out,retval]*/ struct _EventInfo * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetProperty_3(
+		/*[in]*/ BSTR name,
+		/*[in]*/ struct _Type * returnType,
+		/*[in]*/ SAFEARRAY * types,
+		/*[in]*/ SAFEARRAY * modifiers,
+		/*[out,retval]*/ struct _PropertyInfo * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetProperty_4(
+		/*[in]*/ BSTR name,
+		/*[in]*/ struct _Type * returnType,
+		/*[in]*/ SAFEARRAY * types,
+		/*[out,retval]*/ struct _PropertyInfo * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetProperty_5(
+		/*[in]*/ BSTR name,
+		/*[in]*/ SAFEARRAY * types,
+		/*[out,retval]*/ struct _PropertyInfo * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetProperty_6(
+		/*[in]*/ BSTR name,
+		/*[in]*/ struct _Type * returnType,
+		/*[out,retval]*/ struct _PropertyInfo * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetProperty_7(
+		/*[in]*/ BSTR name,
+		/*[out,retval]*/ struct _PropertyInfo * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetProperties_2(
+		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetNestedTypes_2(
+		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetNestedType_2(
+		/*[in]*/ BSTR name,
+		/*[out,retval]*/ struct _Type * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetMember_3(
+		/*[in]*/ BSTR name,
+		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall GetMembers_2(
+		/*[out,retval]*/ SAFEARRAY * * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_Attributes(
+		/*[out,retval]*/ enum TypeAttributes * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsNotPublic(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsPublic(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsNestedPublic(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsNestedPrivate(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsNestedFamily(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsNestedAssembly(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsNestedFamANDAssem(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsNestedFamORAssem(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsAutoLayout(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsLayoutSequential(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsExplicitLayout(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsClass(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsInterface(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsValueType(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsAbstract(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsSealed(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsEnum(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsSpecialName(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsImport(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsSerializable(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsAnsiClass(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsUnicodeClass(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsAutoClass(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsArray(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsByRef(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsPointer(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsPrimitive(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsCOMObject(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_HasElementType(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsContextful(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall get_IsMarshalByRef(
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+	HRESULT __stdcall Equals_2(
+		/*[in]*/ struct _Type * o,
+		/*[out,retval]*/ VARIANT_BOOL * pRetVal){  return S_OK; } ;
+
+	//From IUnkonwn
+	HRESULT __stdcall QueryInterface(
+		/* [in] */ REFIID riid,
+		/* [iid_is][out] */ _COM_Outptr_ void __RPC_FAR *__RPC_FAR *ppvObject)
+	{
+		return S_OK;
+	};
+
+	ULONG __stdcall AddRef(void)
+	{
+		return S_OK;
+	};
+
+	ULONG __stdcall Release(void)
+	{
+		return S_OK;
+	};
+};
 
 TYPED_MOCK_CLASS(CDOTNETMocks, CGlobalMock)
 {
@@ -921,6 +1416,27 @@ public:
 	MOCK_METHOD_END(HRESULT, S_OK);
 
 	MOCK_STATIC_METHOD_2(, HRESULT, GetType_2, BSTR, name, _Type * *, pRetVal);
+		my_Type* my_TypeInstance = new my_Type();
+		*pRetVal = my_TypeInstance;
+	MOCK_METHOD_END(HRESULT, S_OK);
+
+	MOCK_STATIC_METHOD_3(, SAFEARRAY *, myTest_SafeArrayCreateVector, VARTYPE, vt, LONG, lLbound, ULONG, cElements)
+	MOCK_METHOD_END(SAFEARRAY *, (SAFEARRAY *)0x42);
+
+	
+	MOCK_STATIC_METHOD_3(, HRESULT, myTest_SafeArrayPutElement, SAFEARRAY *, psa, LONG*, rgIndices, void *, pv)
+	MOCK_METHOD_END(HRESULT, S_OK);
+
+	MOCK_STATIC_METHOD_8(, HRESULT, CreateInstance_3, BSTR, typeName, VARIANT_BOOL, ignoreCase, enum BindingFlags, bindingAttr, _Binder*, binder, SAFEARRAY*, args_entry, _CultureInfo*, culture, SAFEARRAY *, activationAttributes, VARIANT*, pRetVal)
+	MOCK_METHOD_END(HRESULT, S_OK);
+
+	MOCK_STATIC_METHOD_2(, HRESULT, CreateInstance, BSTR, typeName, VARIANT *, pRetVal);
+	MOCK_METHOD_END(HRESULT, S_OK);
+
+	MOCK_STATIC_METHOD_1(, HRESULT, myTest_SafeArrayDestroy, SAFEARRAY *, psa)
+	MOCK_METHOD_END(HRESULT, S_OK);
+
+	MOCK_STATIC_METHOD_6(, HRESULT, InvokeMember_3, BSTR, name, enum BindingFlags, invokeAttr, struct _Binder *, Binder, VARIANT, Target, SAFEARRAY*, args_entry, VARIANT*, pRetVal)
 	MOCK_METHOD_END(HRESULT, S_OK);
 };
 
@@ -943,6 +1459,19 @@ extern "C"
 	DECLARE_GLOBAL_MOCK_METHOD_2(CDOTNETMocks, HRESULT, __stdcall, Load_2, BSTR, assemblyString, _Assembly * *, pRetVal);
 
 	DECLARE_GLOBAL_MOCK_METHOD_2(CDOTNETMocks, HRESULT, __stdcall, GetType_2, BSTR, name, _Type * *, pRetVal);
+	
+	
+	DECLARE_GLOBAL_MOCK_METHOD_3(CDOTNETMocks, SAFEARRAY *, __stdcall, myTest_SafeArrayCreateVector, VARTYPE, vt, LONG, lLbound, ULONG, cElements);
+	
+	DECLARE_GLOBAL_MOCK_METHOD_3(CDOTNETMocks, HRESULT, __stdcall, myTest_SafeArrayPutElement, SAFEARRAY *, psa, LONG*, rgIndices, void *, pv);
+
+	DECLARE_GLOBAL_MOCK_METHOD_8(CDOTNETMocks, HRESULT, __stdcall, CreateInstance_3, BSTR, typeName, VARIANT_BOOL, ignoreCase, enum BindingFlags, bindingAttr, struct _Binder*, Binder, SAFEARRAY*, args, struct _CultureInfo*, culture, SAFEARRAY *, activationAttributes, VARIANT*, pRetVal);
+
+	DECLARE_GLOBAL_MOCK_METHOD_2(CDOTNETMocks, HRESULT, __stdcall, CreateInstance, BSTR, typeName, VARIANT *, pRetVal);
+
+	DECLARE_GLOBAL_MOCK_METHOD_1(CDOTNETMocks, HRESULT, __stdcall, myTest_SafeArrayDestroy, SAFEARRAY *, psa);
+
+	DECLARE_GLOBAL_MOCK_METHOD_6(CDOTNETMocks, HRESULT, __stdcall, InvokeMember_3, BSTR, name, enum BindingFlags, invokeAttr, struct _Binder *, Binder, VARIANT, Target, SAFEARRAY*, args_entry, VARIANT*, pRetVal);
 }
 
 HRESULT myICLRMetaHost::GetRuntime(
@@ -997,6 +1526,37 @@ HRESULT myAssemblyClass::GetType_2(
 	return ::GetType_2(name, pRetVal);
 };
 
+HRESULT myAssemblyClass::CreateInstance_3(
+	/*[in]*/ BSTR typeName,
+	/*[in]*/ VARIANT_BOOL ignoreCase,
+	/*[in]*/ enum BindingFlags bindingAttr,
+	/*[in]*/ struct _Binder * Binder,
+	/*[in]*/ SAFEARRAY * args,
+	/*[in]*/ struct _CultureInfo * culture,
+	/*[in]*/ SAFEARRAY * activationAttributes,
+	/*[out,retval]*/ VARIANT * pRetVal)
+{
+	return ::CreateInstance_3(typeName, ignoreCase, bindingAttr, Binder, args, culture, activationAttributes, pRetVal);
+};
+
+HRESULT myAssemblyClass::CreateInstance(
+	/*[in]*/ BSTR typeName,
+	/*[out,retval]*/ VARIANT * pRetVal)
+{
+	return ::CreateInstance(typeName, pRetVal);
+};
+
+HRESULT my_Type::InvokeMember_3(
+	/*[in]*/ BSTR name,
+	/*[in]*/ enum BindingFlags invokeAttr,
+	/*[in]*/ struct _Binder * Binder,
+	/*[in]*/ VARIANT Target,
+	/*[in]*/ SAFEARRAY * args,
+	/*[out,retval]*/ VARIANT * pRetVal)
+{
+	return ::InvokeMember_3(name, invokeAttr, Binder, Target, args, pRetVal);
+};
+
 BEGIN_TEST_SUITE(dotnet_unittests)
     TEST_SUITE_INITIALIZE(TestClassInitialize)
     {
@@ -1021,6 +1581,8 @@ BEGIN_TEST_SUITE(dotnet_unittests)
         if (!MicroMockAcquireMutex(g_testByTest))
         {
             ASSERT_FAIL("our mutex is ABANDONED. Failure in test framework");
+
+			
         }
     }
 
@@ -1730,8 +2292,9 @@ BEGIN_TEST_SUITE(dotnet_unittests)
 			.IgnoreArgument(2);
 				
 		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrAzureIoTGatewayMessageClassName, IGNORED_PTR_ARG))
-		.IgnoreArgument(2)
-		.SetFailReturn((HRESULT)E_POINTER);
+			.IgnoreArgument(2)
+			.SetFailReturn((HRESULT)E_POINTER);
+
 
 		///act
 		auto  result = theAPIS->Module_Create((MESSAGE_BUS_HANDLE)0x42, &dotNetConfig);
@@ -1742,6 +2305,663 @@ BEGIN_TEST_SUITE(dotnet_unittests)
 
 		///cleanup
 	}
+
+	/* Tests_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
+	TEST_FUNCTION(DotNET_Create_returns_NULL_when_SafeArrayCreateVector_for_MessageBus_fails)
+	{
+		///arrage
+		CDOTNETMocks mocks;
+		const MODULE_APIS* theAPIS = Module_GetAPIS();
+		DOTNET_HOST_CONFIG dotNetConfig;
+		dotNetConfig.dotnet_module_path = "/path/to/csharp_module.dll";
+		dotNetConfig.dotnet_module_entry_class = "mycsharpmodule.classname";
+		dotNetConfig.dotnet_module_args = "module configuration";
+		bstr_t bstrClientModuleAssemblyName(dotNetConfig.dotnet_module_path);
+		bstr_t bstrClientModuleClassName(dotNetConfig.dotnet_module_entry_class);
+		bstr_t bstrAzureIoTGatewayAssemblyName(L"Microsoft.Azure.IoT.Gateway");
+		bstr_t bstrAzureIoTGatewayMessageBusClassName(L"Microsoft.Azure.IoT.Gateway.MessageBus");
+		bstr_t bstrAzureIoTGatewayMessageClassName(L"Microsoft.Azure.IoT.Gateway.Message");
+
+		mocks.ResetAllCalls();
+
+		STRICT_EXPECTED_CALL(mocks, CLRCreateInstance(CLSID_CLRMetaHost_UUID, CLR_METAHOST_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, GetRuntime(DefaultCLRVersion, CLSID_CLRRunTime_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, IsLoadable(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, GetInterface(CLSID_CorRuntimeHost_UUID, ICorRuntimeHost_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, Start());
+
+		STRICT_EXPECTED_CALL(mocks, GetDefaultDomain(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, QueryInterface(AppDomainUUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, Load_2(bstrClientModuleAssemblyName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrClientModuleClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+
+		STRICT_EXPECTED_CALL(mocks, Load_2(bstrAzureIoTGatewayAssemblyName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrAzureIoTGatewayMessageBusClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrAzureIoTGatewayMessageClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 1))
+			.SetFailReturn((SAFEARRAY*)NULL);
+
+		///act
+		auto  result = theAPIS->Module_Create((MESSAGE_BUS_HANDLE)0x42, &dotNetConfig);
+
+		///assert
+		mocks.AssertActualAndExpectedCalls();
+		ASSERT_IS_NULL(result);
+
+		///cleanup
+	}
+
+
+	/* Tests_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
+	TEST_FUNCTION(DotNET_Create_returns_NULL_when_SafeArrayPutElement_for_MessageBus_fails)
+	{
+		///arrage
+		CDOTNETMocks mocks;
+		const MODULE_APIS* theAPIS = Module_GetAPIS();
+		DOTNET_HOST_CONFIG dotNetConfig;
+		dotNetConfig.dotnet_module_path = "/path/to/csharp_module.dll";
+		dotNetConfig.dotnet_module_entry_class = "mycsharpmodule.classname";
+		dotNetConfig.dotnet_module_args = "module configuration";
+		bstr_t bstrClientModuleAssemblyName(dotNetConfig.dotnet_module_path);
+		bstr_t bstrClientModuleClassName(dotNetConfig.dotnet_module_entry_class);
+		bstr_t bstrAzureIoTGatewayAssemblyName(L"Microsoft.Azure.IoT.Gateway");
+		bstr_t bstrAzureIoTGatewayMessageBusClassName(L"Microsoft.Azure.IoT.Gateway.MessageBus");
+		bstr_t bstrAzureIoTGatewayMessageClassName(L"Microsoft.Azure.IoT.Gateway.Message");
+
+		mocks.ResetAllCalls();
+
+		STRICT_EXPECTED_CALL(mocks, CLRCreateInstance(CLSID_CLRMetaHost_UUID, CLR_METAHOST_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, GetRuntime(DefaultCLRVersion, CLSID_CLRRunTime_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, IsLoadable(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, GetInterface(CLSID_CorRuntimeHost_UUID, ICorRuntimeHost_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, Start());
+
+		STRICT_EXPECTED_CALL(mocks, GetDefaultDomain(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, QueryInterface(AppDomainUUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, Load_2(bstrClientModuleAssemblyName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrClientModuleClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+
+		STRICT_EXPECTED_CALL(mocks, Load_2(bstrAzureIoTGatewayAssemblyName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrAzureIoTGatewayMessageBusClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrAzureIoTGatewayMessageClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 1));
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayPutElement(IGNORED_PTR_ARG, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments()
+			.SetFailReturn((HRESULT)E_POINTER);
+
+		///act
+		auto  result = theAPIS->Module_Create((MESSAGE_BUS_HANDLE)0x42, &dotNetConfig);
+
+		///assert
+		mocks.AssertActualAndExpectedCalls();
+		ASSERT_IS_NULL(result);
+
+		///cleanup
+	}
+
+	/* Tests_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
+	TEST_FUNCTION(DotNET_Create_returns_NULL_when_CreateInstance_3_for_MessageBus_fails)
+	{
+		///arrage
+		CDOTNETMocks mocks;
+		const MODULE_APIS* theAPIS = Module_GetAPIS();
+		DOTNET_HOST_CONFIG dotNetConfig;
+		dotNetConfig.dotnet_module_path = "/path/to/csharp_module.dll";
+		dotNetConfig.dotnet_module_entry_class = "mycsharpmodule.classname";
+		dotNetConfig.dotnet_module_args = "module configuration";
+		bstr_t bstrClientModuleAssemblyName(dotNetConfig.dotnet_module_path);
+		bstr_t bstrClientModuleClassName(dotNetConfig.dotnet_module_entry_class);
+		bstr_t bstrAzureIoTGatewayAssemblyName(L"Microsoft.Azure.IoT.Gateway");
+		bstr_t bstrAzureIoTGatewayMessageBusClassName(L"Microsoft.Azure.IoT.Gateway.MessageBus");
+		bstr_t bstrAzureIoTGatewayMessageClassName(L"Microsoft.Azure.IoT.Gateway.Message");
+
+		mocks.ResetAllCalls();
+
+		STRICT_EXPECTED_CALL(mocks, CLRCreateInstance(CLSID_CLRMetaHost_UUID, CLR_METAHOST_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, GetRuntime(DefaultCLRVersion, CLSID_CLRRunTime_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, IsLoadable(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, GetInterface(CLSID_CorRuntimeHost_UUID, ICorRuntimeHost_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, Start());
+
+		STRICT_EXPECTED_CALL(mocks, GetDefaultDomain(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, QueryInterface(AppDomainUUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, Load_2(bstrClientModuleAssemblyName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrClientModuleClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+
+		STRICT_EXPECTED_CALL(mocks, Load_2(bstrAzureIoTGatewayAssemblyName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrAzureIoTGatewayMessageBusClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrAzureIoTGatewayMessageClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 1));
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayPutElement(IGNORED_PTR_ARG, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, CreateInstance_3(bstrAzureIoTGatewayMessageBusClassName, true, static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public), NULL, IGNORED_PTR_ARG, NULL, NULL, IGNORED_PTR_ARG))
+			.IgnoreArgument(5)
+			.IgnoreArgument(8)
+			.SetFailReturn((HRESULT)E_POINTER);
+
+		///act
+		auto  result = theAPIS->Module_Create((MESSAGE_BUS_HANDLE)0x42, &dotNetConfig);
+
+		///assert
+		mocks.AssertActualAndExpectedCalls();
+		ASSERT_IS_NULL(result);
+
+		///cleanup
+	}
+
+	/* Tests_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
+	TEST_FUNCTION(DotNET_Create_returns_NULL_when_CreateInstance_for_ClientModuleClass_fails)
+	{
+		///arrage
+		CDOTNETMocks mocks;
+		const MODULE_APIS* theAPIS = Module_GetAPIS();
+		DOTNET_HOST_CONFIG dotNetConfig;
+		dotNetConfig.dotnet_module_path = "/path/to/csharp_module.dll";
+		dotNetConfig.dotnet_module_entry_class = "mycsharpmodule.classname";
+		dotNetConfig.dotnet_module_args = "module configuration";
+		bstr_t bstrClientModuleAssemblyName(dotNetConfig.dotnet_module_path);
+		bstr_t bstrClientModuleClassName(dotNetConfig.dotnet_module_entry_class);
+		bstr_t bstrAzureIoTGatewayAssemblyName(L"Microsoft.Azure.IoT.Gateway");
+		bstr_t bstrAzureIoTGatewayMessageBusClassName(L"Microsoft.Azure.IoT.Gateway.MessageBus");
+		bstr_t bstrAzureIoTGatewayMessageClassName(L"Microsoft.Azure.IoT.Gateway.Message");
+
+		mocks.ResetAllCalls();
+
+		STRICT_EXPECTED_CALL(mocks, CLRCreateInstance(CLSID_CLRMetaHost_UUID, CLR_METAHOST_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, GetRuntime(DefaultCLRVersion, CLSID_CLRRunTime_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, IsLoadable(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, GetInterface(CLSID_CorRuntimeHost_UUID, ICorRuntimeHost_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, Start());
+
+		STRICT_EXPECTED_CALL(mocks, GetDefaultDomain(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, QueryInterface(AppDomainUUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, Load_2(bstrClientModuleAssemblyName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrClientModuleClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+
+		STRICT_EXPECTED_CALL(mocks, Load_2(bstrAzureIoTGatewayAssemblyName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrAzureIoTGatewayMessageBusClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrAzureIoTGatewayMessageClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 1));
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayPutElement(IGNORED_PTR_ARG, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, CreateInstance_3(bstrAzureIoTGatewayMessageBusClassName, true, static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public), NULL, IGNORED_PTR_ARG, NULL, NULL, IGNORED_PTR_ARG))
+			.IgnoreArgument(5)
+			.IgnoreArgument(8);
+
+		STRICT_EXPECTED_CALL(mocks, CreateInstance(bstrClientModuleClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2)
+			.SetFailReturn((HRESULT)E_POINTER);
+
+
+		///act
+		auto  result = theAPIS->Module_Create((MESSAGE_BUS_HANDLE)0x42, &dotNetConfig);
+
+		///assert
+		mocks.AssertActualAndExpectedCalls();
+		ASSERT_IS_NULL(result);
+
+		///cleanup
+	}
+	
+    /* Tests_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
+	TEST_FUNCTION(DotNET_Create_returns_NULL_when_SafeArrayCreateVector_ForClientCreate_fails)
+	{
+		///arrage
+		CDOTNETMocks mocks;
+		const MODULE_APIS* theAPIS = Module_GetAPIS();
+		DOTNET_HOST_CONFIG dotNetConfig;
+		dotNetConfig.dotnet_module_path = "/path/to/csharp_module.dll";
+		dotNetConfig.dotnet_module_entry_class = "mycsharpmodule.classname";
+		dotNetConfig.dotnet_module_args = "module configuration";
+		bstr_t bstrClientModuleAssemblyName(dotNetConfig.dotnet_module_path);
+		bstr_t bstrClientModuleClassName(dotNetConfig.dotnet_module_entry_class);
+		bstr_t bstrAzureIoTGatewayAssemblyName(L"Microsoft.Azure.IoT.Gateway");
+		bstr_t bstrAzureIoTGatewayMessageBusClassName(L"Microsoft.Azure.IoT.Gateway.MessageBus");
+		bstr_t bstrAzureIoTGatewayMessageClassName(L"Microsoft.Azure.IoT.Gateway.Message");
+
+		mocks.ResetAllCalls();
+
+		STRICT_EXPECTED_CALL(mocks, CLRCreateInstance(CLSID_CLRMetaHost_UUID, CLR_METAHOST_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, GetRuntime(DefaultCLRVersion, CLSID_CLRRunTime_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, IsLoadable(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, GetInterface(CLSID_CorRuntimeHost_UUID, ICorRuntimeHost_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, Start());
+
+		STRICT_EXPECTED_CALL(mocks, GetDefaultDomain(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, QueryInterface(AppDomainUUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, Load_2(bstrClientModuleAssemblyName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrClientModuleClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+
+		STRICT_EXPECTED_CALL(mocks, Load_2(bstrAzureIoTGatewayAssemblyName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrAzureIoTGatewayMessageBusClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrAzureIoTGatewayMessageClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 1));
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayDestroy(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayPutElement(IGNORED_PTR_ARG, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, CreateInstance_3(bstrAzureIoTGatewayMessageBusClassName, true, static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public), NULL, IGNORED_PTR_ARG, NULL, NULL, IGNORED_PTR_ARG))
+			.IgnoreArgument(5)
+			.IgnoreArgument(8);
+
+		STRICT_EXPECTED_CALL(mocks, CreateInstance(bstrClientModuleClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 2))
+			.SetFailReturn((SAFEARRAY*)NULL);
+
+
+		///act
+		auto  result = theAPIS->Module_Create((MESSAGE_BUS_HANDLE)0x42, &dotNetConfig);
+
+		///assert
+		mocks.AssertActualAndExpectedCalls();
+		ASSERT_IS_NULL(result);
+
+		///cleanup
+	}
+
+	/* Tests_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
+	TEST_FUNCTION(DotNET_Create_returns_NULL_when_SafeArrayPutElement_ARG1_ForClientCreate_fails)
+	{
+		///arrage
+		CDOTNETMocks mocks;
+		const MODULE_APIS* theAPIS = Module_GetAPIS();
+		DOTNET_HOST_CONFIG dotNetConfig;
+		dotNetConfig.dotnet_module_path = "/path/to/csharp_module.dll";
+		dotNetConfig.dotnet_module_entry_class = "mycsharpmodule.classname";
+		dotNetConfig.dotnet_module_args = "module configuration";
+		bstr_t bstrClientModuleAssemblyName(dotNetConfig.dotnet_module_path);
+		bstr_t bstrClientModuleClassName(dotNetConfig.dotnet_module_entry_class);
+		bstr_t bstrAzureIoTGatewayAssemblyName(L"Microsoft.Azure.IoT.Gateway");
+		bstr_t bstrAzureIoTGatewayMessageBusClassName(L"Microsoft.Azure.IoT.Gateway.MessageBus");
+		bstr_t bstrAzureIoTGatewayMessageClassName(L"Microsoft.Azure.IoT.Gateway.Message");
+
+		mocks.ResetAllCalls();
+
+		STRICT_EXPECTED_CALL(mocks, CLRCreateInstance(CLSID_CLRMetaHost_UUID, CLR_METAHOST_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, GetRuntime(DefaultCLRVersion, CLSID_CLRRunTime_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, IsLoadable(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, GetInterface(CLSID_CorRuntimeHost_UUID, ICorRuntimeHost_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, Start());
+
+		STRICT_EXPECTED_CALL(mocks, GetDefaultDomain(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, QueryInterface(AppDomainUUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, Load_2(bstrClientModuleAssemblyName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrClientModuleClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+
+		STRICT_EXPECTED_CALL(mocks, Load_2(bstrAzureIoTGatewayAssemblyName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrAzureIoTGatewayMessageBusClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrAzureIoTGatewayMessageClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 1));
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayDestroy(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayPutElement(IGNORED_PTR_ARG, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, CreateInstance_3(bstrAzureIoTGatewayMessageBusClassName, true, static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public), NULL, IGNORED_PTR_ARG, NULL, NULL, IGNORED_PTR_ARG))
+			.IgnoreArgument(5)
+			.IgnoreArgument(8);
+
+		STRICT_EXPECTED_CALL(mocks, CreateInstance(bstrClientModuleClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 2));
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayPutElement(IGNORED_PTR_ARG, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments()
+			.SetFailReturn((HRESULT)E_POINTER);
+
+
+
+
+		///act
+		auto  result = theAPIS->Module_Create((MESSAGE_BUS_HANDLE)0x42, &dotNetConfig);
+
+		///assert
+		mocks.AssertActualAndExpectedCalls();
+		ASSERT_IS_NULL(result);
+
+		///cleanup
+	}
+
+	TEST_FUNCTION(DotNET_Create_returns_NULL_when_SafeArrayPutElement_ARG2_ForClientCreate_fails)
+	{
+		///arrage
+		CDOTNETMocks mocks;
+		const MODULE_APIS* theAPIS = Module_GetAPIS();
+		DOTNET_HOST_CONFIG dotNetConfig;
+		dotNetConfig.dotnet_module_path = "/path/to/csharp_module.dll";
+		dotNetConfig.dotnet_module_entry_class = "mycsharpmodule.classname";
+		dotNetConfig.dotnet_module_args = "module configuration";
+		bstr_t bstrClientModuleAssemblyName(dotNetConfig.dotnet_module_path);
+		bstr_t bstrClientModuleClassName(dotNetConfig.dotnet_module_entry_class);
+		bstr_t bstrAzureIoTGatewayAssemblyName(L"Microsoft.Azure.IoT.Gateway");
+		bstr_t bstrAzureIoTGatewayMessageBusClassName(L"Microsoft.Azure.IoT.Gateway.MessageBus");
+		bstr_t bstrAzureIoTGatewayMessageClassName(L"Microsoft.Azure.IoT.Gateway.Message");
+
+		mocks.ResetAllCalls();
+
+		STRICT_EXPECTED_CALL(mocks, CLRCreateInstance(CLSID_CLRMetaHost_UUID, CLR_METAHOST_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, GetRuntime(DefaultCLRVersion, CLSID_CLRRunTime_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, IsLoadable(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, GetInterface(CLSID_CorRuntimeHost_UUID, ICorRuntimeHost_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, Start());
+
+		STRICT_EXPECTED_CALL(mocks, GetDefaultDomain(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, QueryInterface(AppDomainUUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, Load_2(bstrClientModuleAssemblyName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrClientModuleClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+
+		STRICT_EXPECTED_CALL(mocks, Load_2(bstrAzureIoTGatewayAssemblyName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrAzureIoTGatewayMessageBusClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrAzureIoTGatewayMessageClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 1));
+		
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayDestroy(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayPutElement(IGNORED_PTR_ARG, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, CreateInstance_3(bstrAzureIoTGatewayMessageBusClassName, true, static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public), NULL, IGNORED_PTR_ARG, NULL, NULL, IGNORED_PTR_ARG))
+			.IgnoreArgument(5)
+			.IgnoreArgument(8);
+
+		STRICT_EXPECTED_CALL(mocks, CreateInstance(bstrClientModuleClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 2));
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayDestroy(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayPutElement(IGNORED_PTR_ARG, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayPutElement(IGNORED_PTR_ARG, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments()
+			.SetFailReturn((HRESULT)E_POINTER);
+
+		///act
+		auto  result = theAPIS->Module_Create((MESSAGE_BUS_HANDLE)0x42, &dotNetConfig);
+
+		///assert
+		mocks.AssertActualAndExpectedCalls();
+		ASSERT_IS_NULL(result);
+
+		///cleanup
+	}
+
+	TEST_FUNCTION(DotNET_Create_returns_NULL_when_InvokeMember_3_ForClientCreate_fails)
+	{
+		///arrage
+		CDOTNETMocks mocks;
+		const MODULE_APIS* theAPIS = Module_GetAPIS();
+		DOTNET_HOST_CONFIG dotNetConfig;
+		dotNetConfig.dotnet_module_path = "/path/to/csharp_module.dll";
+		dotNetConfig.dotnet_module_entry_class = "mycsharpmodule.classname";
+		dotNetConfig.dotnet_module_args = "module configuration";
+		bstr_t bstrClientModuleAssemblyName(dotNetConfig.dotnet_module_path);
+		bstr_t bstrClientModuleClassName(dotNetConfig.dotnet_module_entry_class);
+		bstr_t bstrAzureIoTGatewayAssemblyName(L"Microsoft.Azure.IoT.Gateway");
+		bstr_t bstrAzureIoTGatewayMessageBusClassName(L"Microsoft.Azure.IoT.Gateway.MessageBus");
+		bstr_t bstrAzureIoTGatewayMessageClassName(L"Microsoft.Azure.IoT.Gateway.Message");
+		bstr_t bstrCreateClientMethodName(L"Create");
+		variant_t emptyVariant(0);
+
+		mocks.ResetAllCalls();
+
+		STRICT_EXPECTED_CALL(mocks, CLRCreateInstance(CLSID_CLRMetaHost_UUID, CLR_METAHOST_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, GetRuntime(DefaultCLRVersion, CLSID_CLRRunTime_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, IsLoadable(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, GetInterface(CLSID_CorRuntimeHost_UUID, ICorRuntimeHost_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, Start());
+
+		STRICT_EXPECTED_CALL(mocks, GetDefaultDomain(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, QueryInterface(AppDomainUUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, Load_2(bstrClientModuleAssemblyName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrClientModuleClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+
+		STRICT_EXPECTED_CALL(mocks, Load_2(bstrAzureIoTGatewayAssemblyName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrAzureIoTGatewayMessageBusClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrAzureIoTGatewayMessageClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 1));
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayDestroy(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayPutElement(IGNORED_PTR_ARG, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, CreateInstance_3(bstrAzureIoTGatewayMessageBusClassName, true, static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public), NULL, IGNORED_PTR_ARG, NULL, NULL, IGNORED_PTR_ARG))
+			.IgnoreArgument(5)
+			.IgnoreArgument(8);
+
+		STRICT_EXPECTED_CALL(mocks, CreateInstance(bstrClientModuleClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 2));
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayDestroy(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayPutElement(IGNORED_PTR_ARG, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayPutElement(IGNORED_PTR_ARG, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, InvokeMember_3(bstrCreateClientMethodName, static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public | BindingFlags_InvokeMethod), NULL, emptyVariant, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreArgument(4)
+			.IgnoreArgument(5)
+			.IgnoreArgument(6)
+			.SetFailReturn((HRESULT)E_POINTER);
+
+		///act
+		auto  result = theAPIS->Module_Create((MESSAGE_BUS_HANDLE)0x42, &dotNetConfig);
+
+		///assert
+		mocks.AssertActualAndExpectedCalls();
+		ASSERT_IS_NULL(result);
+
+		///cleanup
+	}
+
 
 	/* Tests_SRS_DOTNET_04_007: [ DotNET_Create shall return a non-NULL MODULE_HANDLE when successful. ] */
 	/* Tests_SRS_DOTNET_04_008: [ DotNET_Create shall allocate memory for an instance of the DOTNET_HOST_HANDLE_DATA structure and use that as the backing structure for the module handle. ] */
@@ -1755,6 +2975,13 @@ BEGIN_TEST_SUITE(dotnet_unittests)
 		dotNetConfig.dotnet_module_path = "/path/to/csharp_module.dll";
 		dotNetConfig.dotnet_module_entry_class = "mycsharpmodule.classname";
 		dotNetConfig.dotnet_module_args = "module configuration";
+		bstr_t bstrClientModuleAssemblyName(dotNetConfig.dotnet_module_path);
+		bstr_t bstrClientModuleClassName(dotNetConfig.dotnet_module_entry_class);
+		bstr_t bstrAzureIoTGatewayAssemblyName(L"Microsoft.Azure.IoT.Gateway");
+		bstr_t bstrAzureIoTGatewayMessageBusClassName(L"Microsoft.Azure.IoT.Gateway.MessageBus");
+		bstr_t bstrAzureIoTGatewayMessageClassName(L"Microsoft.Azure.IoT.Gateway.Message");
+		bstr_t bstrCreateClientMethodName(L"Create");
+		variant_t emptyVariant(0);
 
 		mocks.ResetAllCalls();
 
@@ -1763,6 +2990,68 @@ BEGIN_TEST_SUITE(dotnet_unittests)
 
 		STRICT_EXPECTED_CALL(mocks, GetRuntime(DefaultCLRVersion, CLSID_CLRRunTime_UUID, IGNORED_PTR_ARG))
 			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, IsLoadable(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, GetInterface(CLSID_CorRuntimeHost_UUID, ICorRuntimeHost_UUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, Start());
+
+		STRICT_EXPECTED_CALL(mocks, GetDefaultDomain(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, QueryInterface(AppDomainUUID, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, Load_2(bstrClientModuleAssemblyName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrClientModuleClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+
+		STRICT_EXPECTED_CALL(mocks, Load_2(bstrAzureIoTGatewayAssemblyName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrAzureIoTGatewayMessageBusClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, GetType_2(bstrAzureIoTGatewayMessageClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 1));
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayDestroy(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayPutElement(IGNORED_PTR_ARG, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, CreateInstance_3(bstrAzureIoTGatewayMessageBusClassName, true, static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public), NULL, IGNORED_PTR_ARG, NULL, NULL, IGNORED_PTR_ARG))
+			.IgnoreArgument(5)
+			.IgnoreArgument(8);
+
+		STRICT_EXPECTED_CALL(mocks, CreateInstance(bstrClientModuleClassName, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 2));
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayDestroy(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayPutElement(IGNORED_PTR_ARG, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayPutElement(IGNORED_PTR_ARG, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, InvokeMember_3(bstrCreateClientMethodName, static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public | BindingFlags_InvokeMethod), NULL, emptyVariant, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreArgument(4)
+			.IgnoreArgument(5)
+			.IgnoreArgument(6);
 
 		///act
 		auto  result = theAPIS->Module_Create((MESSAGE_BUS_HANDLE)0x42, &dotNetConfig);

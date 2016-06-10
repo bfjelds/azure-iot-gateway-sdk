@@ -31,4 +31,8 @@ set(${theseTestsName}_h_files
     ${dotnet_test_headers}
 )
 
+add_definitions(-DUNDER_TEST)
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /IGNORE:4217")
+set(CMAKE_SHARED_LINKER_FLAGS "$(CMAKE_SHARED_LINKER_FLAGS) /IGNORE:4217")
+
 build_test_artifacts(${theseTestsName} ON ${LIBS})
