@@ -627,42 +627,8 @@ BEGIN_TEST_SUITE(dotnet_hl_unittests)
 	}
 
 	/* Tests_SRS_DOTNET_HL_04_007: [ DotNET_HL_Create shall pass busHandle and const void* configuration ( with DOTNET_HOST_CONFIG) to DotNET_Create. ]*/
-	TEST_FUNCTION(dotnet_hl_Create_Create_returns_NULL_when_malloc_fails)
-	{
-		///arrange
-		CDOTNETHLMocks mocks;
-
-		STRICT_EXPECTED_CALL(mocks, json_parse_string(IGNORED_PTR_ARG))
-			.IgnoreArgument(1);
-
-		STRICT_EXPECTED_CALL(mocks, json_value_get_object(IGNORED_PTR_ARG))
-			.IgnoreArgument(1);
-
-		STRICT_EXPECTED_CALL(mocks, json_object_get_string(IGNORED_PTR_ARG, "dotnet_module_path"))
-			.IgnoreArgument(1);
-
-		STRICT_EXPECTED_CALL(mocks, json_object_get_string(IGNORED_PTR_ARG, "dotnet_module_entry_class"))
-			.IgnoreArgument(1);
-
-		STRICT_EXPECTED_CALL(mocks, json_object_get_string(IGNORED_PTR_ARG, "dotnet_module_args"))
-			.IgnoreArgument(1);
-
-		STRICT_EXPECTED_CALL(mocks, gballoc_malloc(IGNORED_NUM_ARG))
-			.IgnoreArgument(1)
-			.SetFailReturn((void*)NULL);
-
-		///act
-		auto result = DotNET_HL_Create((MESSAGE_BUS_HANDLE)0x42, (const void*)FAKE_CONFIG);
-
-		///assert
-		mocks.AssertActualAndExpectedCalls();
-		ASSERT_IS_NULL(result);
-
-		///cleanup
-	}
-
 	/* Tests_SRS_DOTNET_HL_04_009: [ If DotNET_Create fails then DotNET_HL_Create shall fail and return NULL. ] */
-	TEST_FUNCTION(DOTNET_HL_Create_fail_when_DotNET_Create_fail)
+	TEST_FUNCTION(dotnet_hl_Create_Create_returns_NULL_Module_Create_fails)
 	{
 		///arrange
 		CDOTNETHLMocks mocks;
@@ -680,9 +646,6 @@ BEGIN_TEST_SUITE(dotnet_hl_unittests)
 			.IgnoreArgument(1);
 
 		STRICT_EXPECTED_CALL(mocks, json_object_get_string(IGNORED_PTR_ARG, "dotnet_module_args"))
-			.IgnoreArgument(1);
-
-		STRICT_EXPECTED_CALL(mocks, gballoc_malloc(IGNORED_NUM_ARG))
 			.IgnoreArgument(1);
 
 		STRICT_EXPECTED_CALL(mocks, MODULE_STATIC_GETAPIS(DOTNET_HOST)());
@@ -691,9 +654,6 @@ BEGIN_TEST_SUITE(dotnet_hl_unittests)
 			.IgnoreArgument(2)
 			.SetFailReturn((MODULE_HANDLE*)NULL);
 
-		STRICT_EXPECTED_CALL(mocks, gballoc_free(IGNORED_PTR_ARG))
-			.IgnoreArgument(1);
-
 		///act
 		auto result = DotNET_HL_Create((MESSAGE_BUS_HANDLE)0x42, (const void*)FAKE_CONFIG);
 
@@ -703,7 +663,7 @@ BEGIN_TEST_SUITE(dotnet_hl_unittests)
 
 		///cleanup
 	}
-
+		
 	/* Tests_SRS_DOTNET_HL_04_007: [ DotNET_HL_Create shall pass busHandle and const void* configuration ( with DOTNET_HOST_CONFIG) to DotNET_Create. ]*/
 	/* Tests_SRS_DOTNET_HL_04_008: [ If DotNET_Create succeeds then DotNET_HL_Create shall succeed and return a non-NULL value. ] */
 	TEST_FUNCTION(DOTNET_HL_Create_succeeds)
@@ -724,9 +684,6 @@ BEGIN_TEST_SUITE(dotnet_hl_unittests)
 			.IgnoreArgument(1);
 
 		STRICT_EXPECTED_CALL(mocks, json_object_get_string(IGNORED_PTR_ARG, "dotnet_module_args"))
-			.IgnoreArgument(1);
-
-		STRICT_EXPECTED_CALL(mocks, gballoc_malloc(IGNORED_NUM_ARG))
 			.IgnoreArgument(1);
 
 		STRICT_EXPECTED_CALL(mocks, MODULE_STATIC_GETAPIS(DOTNET_HOST)());
@@ -797,9 +754,6 @@ BEGIN_TEST_SUITE(dotnet_hl_unittests)
 
 		auto module = DotNET_HL_Create((MESSAGE_BUS_HANDLE)0x42, (const void*)FAKE_CONFIG);
 		mocks.ResetAllCalls();
-
-		STRICT_EXPECTED_CALL(mocks, gballoc_free(IGNORED_PTR_ARG))
-			.IgnoreArgument(1);
 
 		STRICT_EXPECTED_CALL(mocks, MODULE_STATIC_GETAPIS(DOTNET_HOST)());
 

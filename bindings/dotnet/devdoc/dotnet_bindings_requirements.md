@@ -55,13 +55,11 @@ pointer to a `DOTNET_HOST_CONFIG` object.
 
 **SRS_DOTNET_04_008: [** `DotNET_Create` shall allocate memory for an instance of the `DOTNET_HOST_HANDLE_DATA` structure and use that as the backing structure for the module handle. **]**
 
-**SRS_DOTNET_04_009: [** `DotNET_Create` shall construct and initialize the `STRING_HANDLE` member `DOTNET_HOST_CONFIG::dotnet_module_path` with a copy of `configuration->dotnet_module_path`. **]**
-
-**SRS_DOTNET_04_010: [** `DotNET_Create` shall construct and initialize the `STRING_HANDLE` member `DOTNET_HOST_CONFIG::dotnet_module_entry_class` from `configuration->dotnet_module_entry_class`. **]**
-
-**SRS_DOTNET_04_011: [** `DotNET_Create` shall construct and initialize the `STRING_HANDLE` member `DOTNET_HOST_CONFIG::dotnet_module_args` from `configuration->dotnet_module_args`. **]**
-
 **SRS_DOTNET_04_012: [** `DotNET_Create` shall get the 3 CLR Host Interfaces (CLRMetaHost, CLRRuntimeInfo and CorRuntimeHost) and save it on `DOTNET_HOST_HANDLE_DATA`. **]**
+
+**SRS_DOTNET_04_009: [** `DotNET_Create` shall create an instance of .NET client Module and save it on `DOTNET_HOST_HANDLE_DATA`. **]**
+
+**SRS_DOTNET_04_010: [** `DotNET_Create` shall save Client module Type, AzureIoTGateway Message Class and Azure IoT Gateway Assembly and on `DOTNET_HOST_HANDLE_DATA`. **]**
 
 **SRS_DOTNET_04_013: [** A .NET Object conforming to the `MessageBus` interface defined shall be created: **]**
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C#
