@@ -122,6 +122,8 @@ target_compile_definitions(ble_hl_static PRIVATE BUILD_MODULE_TYPE_STATIC)
 target_link_libraries(ble_hl_static ble_static ${LIBS})
 linkSharedUtil(ble_hl_static)
 
+
+
 add_module_to_solution(ble)
 
 add_subdirectory(tests)
