@@ -17,6 +17,9 @@
 #define SafeArrayCreateVector myTest_SafeArrayCreateVector
 #define SafeArrayPutElement   myTest_SafeArrayPutElement
 #define SafeArrayDestroy      myTest_SafeArrayDestroy
+#define SafeArrayCreate       myTest_SafeArrayCreate
+#define SafeArrayAccessData   myTest_SafeArrayAccessData
+#define SafeArrayUnaccessData myTest_SafeArrayUnaccessData
 #endif
 
 #include "dotnet.h"
@@ -85,11 +88,11 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
 			LogError("invalid configuration. dotnet_module_args=%p", dotNetConfig->dotnet_module_args);
 			result = NULL;
 		}		
-		/* Codes_SRS_DOTNET_04_008: [ DotNET_Create shall allocate memory for an instance of the DOTNET_HOST_HANDLE_DATA structure and use that as the backing structure for the module handle. ] */
 		else
 		{
 			try
 			{
+				/* Codes_SRS_DOTNET_04_008: [ DotNET_Create shall allocate memory for an instance of the DOTNET_HOST_HANDLE_DATA structure and use that as the backing structure for the module handle. ] */
 				result = new DOTNET_HOST_HANDLE_DATA();
 			}
 			catch (const std::bad_alloc& badAllocExpection)
@@ -123,6 +126,7 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
 				result->bus = busHandle;
 
 				/* Codes_SRS_DOTNET_04_012: [ DotNET_Create shall get the 3 CLR Host Interfaces (CLRMetaHost, CLRRuntimeInfo and CorRuntimeHost) and save it on DOTNET_HOST_HANDLE_DATA. ] */
+				/* Codes_SRS_DOTNET_04_010: [ DotNET_Create shall save Client module Type, AzureIoTGateway Message Class and Azure IoT Gateway Assembly and on DOTNET_HOST_HANDLE_DATA. ] */
 				hr = CLRCreateInstance(CLSID_CLRMetaHost, IID_PPV_ARGS(&result->pMetaHost));
 				if (FAILED(hr))
 				{
@@ -132,6 +136,7 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
 					result = NULL;
 				}
 				/* Codes_SRS_DOTNET_04_012: [ DotNET_Create shall get the 3 CLR Host Interfaces (CLRMetaHost, CLRRuntimeInfo and CorRuntimeHost) and save it on DOTNET_HOST_HANDLE_DATA. ] */
+				/* Codes_SRS_DOTNET_04_010: [ DotNET_Create shall save Client module Type, AzureIoTGateway Message Class and Azure IoT Gateway Assembly and on DOTNET_HOST_HANDLE_DATA. ] */
 				else if (FAILED(hr = (result->pMetaHost)->GetRuntime(DefaultCLRVersion, IID_PPV_ARGS(&result->pRuntimeInfo))))
 				{
 					/* Codes_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
@@ -141,8 +146,10 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
 					delete(result);
 					result = NULL;
 				}
+				/* Codes_SRS_DOTNET_04_012: [ DotNET_Create shall get the 3 CLR Host Interfaces (CLRMetaHost, CLRRuntimeInfo and CorRuntimeHost) and save it on DOTNET_HOST_HANDLE_DATA. ] */
 				else if(FAILED(hr = (result->pRuntimeInfo)->IsLoadable(&fLoadable)))
 				{
+					/* Codes_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
 					LogError("ICLRRuntimeInfo::IsLoadable failed w/hr 0x%08lx\n", hr);
 					(result->pRuntimeInfo)->Release();
 					result->pRuntimeInfo = NULL;
@@ -153,6 +160,7 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
 				}
 				else if(!fLoadable)
 				{
+					/* Codes_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
 					LogError(".NET runtime %ls cannot be loaded\n", DefaultCLRVersion);
 					(result->pRuntimeInfo)->Release();
 					result->pRuntimeInfo = NULL;
@@ -161,8 +169,11 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
 					delete(result);
 					result = NULL;
 				}
+				/* Codes_SRS_DOTNET_04_012: [ DotNET_Create shall get the 3 CLR Host Interfaces (CLRMetaHost, CLRRuntimeInfo and CorRuntimeHost) and save it on DOTNET_HOST_HANDLE_DATA. ] */
+				/* Codes_SRS_DOTNET_04_010: [ DotNET_Create shall save Client module Type, AzureIoTGateway Message Class and Azure IoT Gateway Assembly and on DOTNET_HOST_HANDLE_DATA. ] */
 				else if(FAILED(hr = (result->pRuntimeInfo)->GetInterface(CLSID_CorRuntimeHost, IID_PPV_ARGS(&(result->pCorRuntimeHost)))))
 				{
+					/* Codes_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
 					LogError("ICLRRuntimeInfo::GetInterface failed w/hr 0x%08lx\n", hr);
 					(result->pRuntimeInfo)->Release();
 					result->pRuntimeInfo = NULL;
@@ -173,6 +184,7 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
 				}
 				else if(FAILED(hr = (result->pCorRuntimeHost)->Start()))
 				{
+					/* Codes_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
 					LogError("CLR failed to start w/hr 0x%08lx\n", hr);
 					(result->pCorRuntimeHost)->Release();
 					result->pCorRuntimeHost = NULL;
@@ -185,6 +197,7 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
 				}
 				else if (FAILED(hr = (result->pCorRuntimeHost)->GetDefaultDomain(&spAppDomainThunk)))
 				{
+					/* Codes_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
 					LogError("ICorRuntimeHost::GetDefaultDomain failed w/hr 0x%08lx\n", hr);
 					(result->pCorRuntimeHost)->Release();
 					result->pCorRuntimeHost = NULL;
@@ -197,6 +210,7 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
 				}
 				else if (FAILED(hr = spAppDomainThunk->QueryInterface(IID_PPV_ARGS(&spDefaultAppDomain))))
 				{
+					/* Codes_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
 					LogError("Failed to get default AppDomain w/hr 0x%08lx\n", hr);
 					(result->pCorRuntimeHost)->Release();
 					result->pCorRuntimeHost = NULL;
@@ -209,6 +223,7 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
 				}
 				else if (FAILED(hr = spDefaultAppDomain->Load_2(bstrClientModuleAssemblyName, &spClientModuleAssembly)))
 				{
+					/* Codes_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
 					LogError("Failed to load the assembly w/hr 0x%08lx\n", hr);
 					(result->pCorRuntimeHost)->Release();
 					result->pCorRuntimeHost = NULL;
@@ -219,8 +234,10 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
 					delete(result);
 					result = NULL; 
 				}
+				/* Codes_SRS_DOTNET_04_010: [ DotNET_Create shall save Client module Type, AzureIoTGateway Message Class and Azure IoT Gateway Assembly and on DOTNET_HOST_HANDLE_DATA. ] */
 				else if (FAILED(hr = spClientModuleAssembly->GetType_2(bstrClientModuleClassName, &result->spClientModuleType)))
 				{
+					/* Codes_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
 					LogError("Failed to get the Type interface w/hr 0x%08lx\n", hr);
 					(result->pCorRuntimeHost)->Release();
 					result->pCorRuntimeHost = NULL;
@@ -233,6 +250,7 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
 				}
 				else if (FAILED(hr = spDefaultAppDomain->Load_2(bstrAzureIoTGatewayAssemblyName, &(result->spAzureIoTGatewayAssembly))))
 				{
+					/* Codes_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
 					LogError("Failed to load the assembly w/hr 0x%08lx\n", hr);
 					(result->pCorRuntimeHost)->Release();
 					result->pCorRuntimeHost = NULL;
@@ -245,6 +263,7 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
 				}
 				else if (FAILED(hr = result->spAzureIoTGatewayAssembly->GetType_2(bstrAzureIoTGatewayMessageBusClassName, &spAzureIoTGatewayMessageBusClassType)))
 				{
+					/* Codes_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
 					LogError("Failed to get the Type interface w/hr 0x%08lx\n", hr);
 					(result->pCorRuntimeHost)->Release();
 					result->pCorRuntimeHost = NULL;
@@ -255,8 +274,10 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
 					delete(result);
 					result = NULL;
 				}
+				/* Codes_SRS_DOTNET_04_010: [ DotNET_Create shall save Client module Type, AzureIoTGateway Message Class and Azure IoT Gateway Assembly and on DOTNET_HOST_HANDLE_DATA. ] */
 				else if (FAILED(hr = result->spAzureIoTGatewayAssembly->GetType_2(bstrAzureIoTGatewayMessageClassName, &(result->spAzureIoTGatewayMessageClassType))))
 				{
+					/* Codes_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
 					LogError("Failed to get the Type interface w/hr 0x%08lx\n", hr);
 					(result->pCorRuntimeHost)->Release();
 					result->pCorRuntimeHost = NULL;
@@ -276,6 +297,7 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
 
 					if (psaAzureIoTGatewayMessageBusConstructorArgs == NULL)
 					{
+						/* Codes_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
 						LogError("Failed to create Safe Array. ");
 						(result->pCorRuntimeHost)->Release();
 						result->pCorRuntimeHost = NULL;
@@ -288,6 +310,7 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
 					}
 					else if (FAILED(hr = SafeArrayPutElement(psaAzureIoTGatewayMessageBusConstructorArgs, &index, &msgBus)))
 					{
+						/* Codes_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
 						LogError("Adding Element on the safe array failed. w/hr 0x%08lx\n", hr);
 						(result->pCorRuntimeHost)->Release();
 						result->pCorRuntimeHost = NULL;
@@ -298,8 +321,10 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
 						delete(result);
 						result = NULL;
 					}
+					/* Codes_SRS_DOTNET_04_013: [ A .NET Object conforming to the MessageBus interface defined shall be created: ] */
 					else if (FAILED(hr = result->spAzureIoTGatewayAssembly->CreateInstance_3(bstrAzureIoTGatewayMessageBusClassName, true, static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public), NULL, psaAzureIoTGatewayMessageBusConstructorArgs, NULL, NULL, &vtAzureIoTGatewayMessageBusObject)))
 					{
+						/* Codes_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
 						LogError("Creating an instance of Message Bus failed with hr 0x%08lx\n", hr);
 						(result->pCorRuntimeHost)->Release();
 						result->pCorRuntimeHost = NULL;
@@ -310,9 +335,11 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
 						delete(result);
 						result = NULL;
 					}
-					//Create an instance of the Client Module (Default Blank Constructor will be called. 
+					/* Codes_SRS_DOTNET_04_009: [ DotNET_Create shall create an instance of .NET client Module and save it on DOTNET_HOST_HANDLE_DATA. ] */
+					/* Codes_SRS_DOTNET_04_010: [ DotNET_Create shall save Client module Type, AzureIoTGateway Message Class and Azure IoT Gateway Assembly and on DOTNET_HOST_HANDLE_DATA. ] */
 					else if (FAILED(hr = spClientModuleAssembly->CreateInstance(bstrClientModuleClassName, &result->vtClientModuleObject)))
 					{
+						/* Codes_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
 						LogError("Creating an instance of Client Class failed with hr 0x%08lx\n", hr);
 						(result->pCorRuntimeHost)->Release();
 						result->pCorRuntimeHost = NULL;
@@ -329,6 +356,7 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
 						index = 0;
 						if (psaClientModuleCreateArgs == NULL)
 						{
+							/* Codes_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
 							LogError("Failed to create Safe Array. ");
 							(result->pCorRuntimeHost)->Release();
 							result->pCorRuntimeHost = NULL;
@@ -341,6 +369,7 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
 						}
 						else if (FAILED(hr = SafeArrayPutElement(psaClientModuleCreateArgs, &index, &vtAzureIoTGatewayMessageBusObject)))
 						{
+							/* Codes_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
 							LogError("Adding Element on the safe array failed. w/hr 0x%08lx\n", hr);
 							(result->pCorRuntimeHost)->Release();
 							result->pCorRuntimeHost = NULL;
@@ -360,6 +389,7 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
 
 							if (FAILED(hr = SafeArrayPutElement(psaClientModuleCreateArgs, &index, &vtdotNetArgsArg)))
 							{
+								/* Codes_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
 								LogError("Adding Element on the safe array failed. w/hr 0x%08lx\n", hr);
 								(result->pCorRuntimeHost)->Release();
 								result->pCorRuntimeHost = NULL;
@@ -370,8 +400,10 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
 								delete(result);
 								result = NULL;
 							}
+							/* Codes_SRS_DOTNET_04_014: [ DotNET_Create shall call Create C# method, implemented from IGatewayModule, passing the MessageBus object created and configuration->dotnet_module_args. ] */
 							else if (FAILED(hr = result->spClientModuleType->InvokeMember_3(bstrCreateClientMethodName, static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public | BindingFlags_InvokeMethod), NULL, result->vtClientModuleObject, psaClientModuleCreateArgs, &vt_Empty)))
 							{
+								/* Codes_SRS_DOTNET_04_006: [ DotNET_Create shall return NULL if an underlying API call fails. ] */
 								LogError("Failed to invoke Create Method with hr 0x%08lx\n", hr);
 								(result->pCorRuntimeHost)->Release();
 								result->pCorRuntimeHost = NULL;
@@ -398,106 +430,159 @@ static MODULE_HANDLE DotNET_Create(MESSAGE_BUS_HANDLE busHandle, const void* con
 static void DotNET_Receive(MODULE_HANDLE moduleHandle, MESSAGE_HANDLE messageHandle)
 {
 	if (
-		(moduleHandle == NULL) ||
-		(messageHandle == NULL)
+		(moduleHandle != NULL) &&
+		(messageHandle != NULL)
 		)
 	{
-		LogError("invalid arg moduleHandle=%p, messageHandle=%p", moduleHandle, messageHandle);
-		/*do nothing*/
+		DOTNET_HOST_HANDLE_DATA* result = (DOTNET_HOST_HANDLE_DATA*)moduleHandle;
+
+		/* Codes_SRS_DOTNET_04_017: [ DotNET_Receive shall construct an instance of the Message interface as defined below: ] */
+		int32_t msg_size;
+		const unsigned char*msgByteArray = Message_ToByteArray(messageHandle, &msg_size);
+
+		if (msgByteArray != NULL)
+		{
+			variant_t msgContentInByteArray;
+			V_VT(&msgContentInByteArray) = VT_ARRAY | VT_UI1;
+			SAFEARRAYBOUND rgsabound[1];
+			rgsabound[0].cElements = msg_size;
+			rgsabound[0].lLbound = 0;
+
+			V_ARRAY(&msgContentInByteArray) = SafeArrayCreate(VT_UI1, 1, rgsabound);
+
+			if (V_ARRAY(&msgContentInByteArray) != NULL)
+			{
+				HRESULT hrResult;
+				void * pArrayData = NULL;
+				hrResult = SafeArrayAccessData(msgContentInByteArray.parray, &pArrayData);
+				if (!FAILED(hrResult))
+				{
+					memcpy(pArrayData, msgByteArray, msg_size);
+					hrResult = SafeArrayUnaccessData(msgContentInByteArray.parray);
+					if (!FAILED(hrResult))
+					{
+						SAFEARRAY *psaAzureIoTGatewayMessageConstructorArgs = SafeArrayCreateVector(VT_VARIANT, 0, 1);
+
+						if (psaAzureIoTGatewayMessageConstructorArgs != NULL)
+						{
+							LONG index = 0;
+							hrResult = SafeArrayPutElement(psaAzureIoTGatewayMessageConstructorArgs, &index, &msgContentInByteArray);
+							if (!FAILED(hrResult))
+							{
+								bstr_t bstrAzureIoTGatewayMessageClassName(AZUREIOTGATEWAY_MESSAGE_CLASSNAME);
+								variant_t vtAzureIoTGatewayMessageObject;
+
+								/* Codes_SRS_DOTNET_04_017: [ DotNET_Receive shall construct an instance of the Message interface as defined below: ] */
+								hrResult = result->spAzureIoTGatewayAssembly->CreateInstance_3
+								(
+									bstrAzureIoTGatewayMessageClassName,
+									true,
+									static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public),
+									NULL,
+									psaAzureIoTGatewayMessageConstructorArgs,
+									NULL, NULL,
+									&vtAzureIoTGatewayMessageObject
+								);
+								
+								if (!FAILED(hrResult))
+								{
+									bstr_t bstrReceiveClientMethodName(L"Receive");
+									SAFEARRAY *psaAzureIoTGatewayClientReceiveArgs = SafeArrayCreateVector(VT_VARIANT, 0, 1);
+									if (psaAzureIoTGatewayClientReceiveArgs != NULL)
+									{
+										variant_t vt_Empty;
+
+										index = 0;
+										hrResult = SafeArrayPutElement(psaAzureIoTGatewayClientReceiveArgs, &index, &vtAzureIoTGatewayMessageObject);
+
+										if (!FAILED(hrResult))
+										{
+											/* Codes_SRS_DOTNET_04_018: [ DotNET_Create shall call Receive C# method passing the Message object created with the content of message serialized into Message object. ] */
+											hrResult = result->spClientModuleType->InvokeMember_3
+											(
+												bstrReceiveClientMethodName,
+												static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public | BindingFlags_InvokeMethod),
+												NULL,
+												result->vtClientModuleObject,
+												psaAzureIoTGatewayClientReceiveArgs,
+												&vt_Empty
+											);
+											if (FAILED(hrResult))
+											{
+												LogError("Failed to Invoke Receive method. w/hr 0x%08lx\n", hrResult);
+											}
+										}
+										else
+										{
+											LogError("Error Adding Argument to the Safe Array.w/hr 0x%08lx\n", hrResult);
+										}
+									}
+									else
+									{
+										LogError("Error creating arguments Safe Array for Receive.");
+									}
+								}
+								else
+								{
+									LogError("Error Creating Message Class Instance.w/hr 0x%08lx\n", hrResult);
+								}
+							}
+							else
+							{
+								LogError("Error Adding Element to the Arguments Safe Array.w/hr 0x%08lx\n", hrResult);
+							}
+						}
+						else
+						{
+							LogError("Error building SafeArray Vector for arguments.");
+						}
+					}
+					else
+					{
+						LogError("Error on call for SafeArrayUnaccessData.w/hr 0x%08lx\n", hrResult);
+					}
+				}
+				else
+				{
+					LogError("Error Acessing Safe Array Data. w/hr 0x%08lx\n", hrResult);
+				}
+			}
+			else
+			{
+				LogError("Error creating SafeArray.");
+			}
+		}
+		else
+		{
+			LogError("Error getting message Byte Array.");
+		}
 	}
 	else
 	{
-		//DOTNET_HOST_HANDLE_DATA* result = (DOTNET_HOST_HANDLE_DATA*)moduleHandle;
-		//int32_t msg_size;
-		//const unsigned char*msgByteArray = Message_ToByteArray(messageHandle, &msg_size);
-		//
-		//variant_t msgContentInByteArray;
-
-		//V_VT(&msgContentInByteArray) = VT_ARRAY | VT_UI1;
-
-		//SAFEARRAYBOUND rgsabound[1];
-		//rgsabound[0].cElements = msg_size;
-		//rgsabound[0].lLbound = 0;
-
-		//V_ARRAY(&msgContentInByteArray) = SafeArrayCreate(VT_UI1, 1, rgsabound);
-
-		//void * pArrayData = NULL;
-		//SafeArrayAccessData(msgContentInByteArray.parray, &pArrayData);
-		//memcpy(pArrayData, msgByteArray, msg_size);
-		//SafeArrayUnaccessData(msgContentInByteArray.parray);
-	
-		//SAFEARRAY *psaAzureIoTGatewayMessageConstructorArgs = SafeArrayCreateVector(VT_VARIANT, 0, 1);
-		//LONG index = 0;
-		//HRESULT hr = SafeArrayPutElement(psaAzureIoTGatewayMessageConstructorArgs, &index, &msgContentInByteArray);
-		//
-		//bstr_t bstrAzureIoTGatewayMessageClassName(AZUREIOTGATEWAY_MESSAGE_CLASSNAME);
-
-		//variant_t vtAzureIoTGatewayMessageObject;
-
-	 //   hr = result->spAzureIoTGatewayAssembly->CreateInstance_3
-		//(
-		//	bstrAzureIoTGatewayMessageClassName,
-		//	true,
-		//	static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public),
-		//	NULL,
-		//	psaAzureIoTGatewayMessageConstructorArgs,
-		//	NULL, NULL,
-		//	&vtAzureIoTGatewayMessageObject
-		//);
-		//		
-		//bstr_t bstrCreateClientMethodName(L"Receive");
-		//SAFEARRAY *psaAzureIoTGatewayClientReceiveArgs = SafeArrayCreateVector(VT_VARIANT, 0, 1);
-		//variant_t vt_Empty;
-
-		//index = 0;
-		//hr = SafeArrayPutElement(psaAzureIoTGatewayClientReceiveArgs, &index, &vtAzureIoTGatewayMessageObject);
-
-		//hr = result->spClientModuleType->InvokeMember_3
-		//(
-		//	bstrCreateClientMethodName, 
-		//	static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public | BindingFlags_InvokeMethod), 
-		//	NULL, 
-		//	result->vtClientModuleObject, 
-		//	psaAzureIoTGatewayClientReceiveArgs,
-		//	&vt_Empty
-		//);
+		/* Codes_SRS_DOTNET_04_015: [ DotNET_Receive shall do nothing if module is NULL. ] */
+		/* Codes_SRS_DOTNET_04_016: [ DotNET_Receive shall do nothing if message is NULL. ] */
+		LogError("invalid arg moduleHandle=%p, messageHandle=%p", moduleHandle, messageHandle);
+		/*do nothing*/
 	}
 }
 
 
 static void DotNET_Destroy(MODULE_HANDLE module)
 {
-    /*first stop the thread*/
-	DOTNET_HOST_HANDLE_DATA* handleData = (DOTNET_HOST_HANDLE_DATA*)module;
-
-	//handleData->pCorRuntimeHost->Release();
-	//handleData->pCorRuntimeHost = NULL;
-	//(handleData->pRuntimeInfo)->Release();
-	//handleData->pRuntimeInfo = NULL;
-	//(handleData->pMetaHost)->Release();
-	//handleData->pMetaHost = NULL;
-
-	delete(handleData);
+	/* Codes_SRS_DOTNET_04_019: [ DotNET_Destroy shall do nothing if module is NULL. ] */
+	if (module != NULL)
+	{
+		DOTNET_HOST_HANDLE_DATA* handleData = (DOTNET_HOST_HANDLE_DATA*)module;
+		/* Codes_SRS_DOTNET_04_020: [ DotNET_Destroy shall free all resources associated with the given module.. ] */
+		(handleData->pCorRuntimeHost)->Release();
+		handleData->pCorRuntimeHost = NULL;
+		(handleData->pRuntimeInfo)->Release();
+		handleData->pRuntimeInfo = NULL;
+		(handleData->pMetaHost)->Release();
+		handleData->pMetaHost = NULL;
+		delete(handleData);
+	}
 }
-
-//bool dotnetHost_PublishMessage(MESSAGE_BUS_HANDLE bus, MODULE_HANDLE sourceModule, const unsigned char* source, int32_t size)
-//{
-//	//Create a MEssage from Byte Array. 
-//	//Publish this message on the bus. 
-//	MESSAGE_HANDLE msgHandle = Message_CreateFromByteArray(source, size);
-//
-//	MESSAGE_BUS_RESULT msgBusResult = MessageBus_Publish(bus, sourceModule, msgHandle);
-//
-//	if (msgBusResult != MESSAGE_BUS_OK)
-//	{
-//		return false;
-//	}
-//	else
-//	{
-//		return true;
-//	}
-//}
-
 
 static const MODULE_APIS DOTNET_APIS_all =
 {

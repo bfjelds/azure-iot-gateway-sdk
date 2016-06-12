@@ -12,7 +12,6 @@
 #include "azure_c_shared_utility/lock.h"
 #include "azure_c_shared_utility/base64.h"
 #include "dotnet.h"
-#include "message.h"
 #include "azure_c_shared_utility/constmap.h"
 #include "azure_c_shared_utility/map.h"
 
@@ -1377,7 +1376,7 @@ class my_Type: public _Type
 TYPED_MOCK_CLASS(CDOTNETMocks, CGlobalMock)
 {
 public:
-    // CLR Mocks
+    // CLR/COM Mocks
 	MOCK_STATIC_METHOD_3(, HRESULT, CLRCreateInstance, REFCLSID, clsid, REFIID, riid, LPVOID *, ppInterface)
 		myICLRMetaHost* myCLRInstance = new myICLRMetaHost();
 		*ppInterface = myCLRInstance;
@@ -1420,6 +1419,17 @@ public:
 		*pRetVal = my_TypeInstance;
 	MOCK_METHOD_END(HRESULT, S_OK);
 
+	MOCK_STATIC_METHOD_8(, HRESULT, CreateInstance_3, BSTR, typeName, VARIANT_BOOL, ignoreCase, enum BindingFlags, bindingAttr, _Binder*, binder, SAFEARRAY*, args_entry, _CultureInfo*, culture, SAFEARRAY *, activationAttributes, VARIANT*, pRetVal)
+		MOCK_METHOD_END(HRESULT, S_OK);
+
+	MOCK_STATIC_METHOD_2(, HRESULT, CreateInstance, BSTR, typeName, VARIANT *, pRetVal);
+	MOCK_METHOD_END(HRESULT, S_OK);
+
+
+	MOCK_STATIC_METHOD_6(, HRESULT, InvokeMember_3, BSTR, name, enum BindingFlags, invokeAttr, struct _Binder *, Binder, VARIANT, Target, SAFEARRAY*, args_entry, VARIANT*, pRetVal)
+		MOCK_METHOD_END(HRESULT, S_OK);
+
+	//Safe Array mocks
 	MOCK_STATIC_METHOD_3(, SAFEARRAY *, myTest_SafeArrayCreateVector, VARTYPE, vt, LONG, lLbound, ULONG, cElements)
 	MOCK_METHOD_END(SAFEARRAY *, (SAFEARRAY *)0x42);
 
@@ -1427,21 +1437,30 @@ public:
 	MOCK_STATIC_METHOD_3(, HRESULT, myTest_SafeArrayPutElement, SAFEARRAY *, psa, LONG*, rgIndices, void *, pv)
 	MOCK_METHOD_END(HRESULT, S_OK);
 
-	MOCK_STATIC_METHOD_8(, HRESULT, CreateInstance_3, BSTR, typeName, VARIANT_BOOL, ignoreCase, enum BindingFlags, bindingAttr, _Binder*, binder, SAFEARRAY*, args_entry, _CultureInfo*, culture, SAFEARRAY *, activationAttributes, VARIANT*, pRetVal)
-	MOCK_METHOD_END(HRESULT, S_OK);
 
-	MOCK_STATIC_METHOD_2(, HRESULT, CreateInstance, BSTR, typeName, VARIANT *, pRetVal);
-	MOCK_METHOD_END(HRESULT, S_OK);
+	MOCK_STATIC_METHOD_3(, SAFEARRAY *, myTest_SafeArrayCreate, VARTYPE, vt, UINT, cDims, SAFEARRAYBOUND *, rgsabound)
+		SAFEARRAY * resultSafeArray = SafeArrayCreate(vt, cDims, rgsabound);
+	MOCK_METHOD_END(SAFEARRAY *, resultSafeArray);
 
 	MOCK_STATIC_METHOD_1(, HRESULT, myTest_SafeArrayDestroy, SAFEARRAY *, psa)
 	MOCK_METHOD_END(HRESULT, S_OK);
 
-	MOCK_STATIC_METHOD_6(, HRESULT, InvokeMember_3, BSTR, name, enum BindingFlags, invokeAttr, struct _Binder *, Binder, VARIANT, Target, SAFEARRAY*, args_entry, VARIANT*, pRetVal)
+	MOCK_STATIC_METHOD_2(, HRESULT, myTest_SafeArrayAccessData, SAFEARRAY *, psa, void**, ppvData)
+		*ppvData = psa->pvData;
 	MOCK_METHOD_END(HRESULT, S_OK);
+
+	MOCK_STATIC_METHOD_1(, HRESULT, myTest_SafeArrayUnaccessData, SAFEARRAY *, psa)
+	MOCK_METHOD_END(HRESULT, S_OK);
+
+	//Message Mocks
+	MOCK_STATIC_METHOD_2(, const unsigned char*, Message_ToByteArray, MESSAGE_HANDLE, messageHandle, int32_t *, size);	
+	     *size = 11;
+	MOCK_METHOD_END(const unsigned char*, (const unsigned char*)"AnyContent");
 };
 
 extern "C"
 {
+	// CLR/COM Mocks
 	DECLARE_GLOBAL_MOCK_METHOD_3(CDOTNETMocks, HRESULT, __stdcall, CLRCreateInstance, REFCLSID, clsid, REFIID, riid, LPVOID *, ppInterface);
 
 	DECLARE_GLOBAL_MOCK_METHOD_3(CDOTNETMocks, HRESULT, __stdcall, GetRuntime, LPCWSTR, pwzVersion, REFIID, riid, LPVOID *, ppRuntime);
@@ -1460,18 +1479,28 @@ extern "C"
 
 	DECLARE_GLOBAL_MOCK_METHOD_2(CDOTNETMocks, HRESULT, __stdcall, GetType_2, BSTR, name, _Type * *, pRetVal);
 	
+	DECLARE_GLOBAL_MOCK_METHOD_8(CDOTNETMocks, HRESULT, __stdcall, CreateInstance_3, BSTR, typeName, VARIANT_BOOL, ignoreCase, enum BindingFlags, bindingAttr, struct _Binder*, Binder, SAFEARRAY*, args, struct _CultureInfo*, culture, SAFEARRAY *, activationAttributes, VARIANT*, pRetVal);
+
+	DECLARE_GLOBAL_MOCK_METHOD_2(CDOTNETMocks, HRESULT, __stdcall, CreateInstance, BSTR, typeName, VARIANT *, pRetVal);
 	
+	DECLARE_GLOBAL_MOCK_METHOD_6(CDOTNETMocks, HRESULT, __stdcall, InvokeMember_3, BSTR, name, enum BindingFlags, invokeAttr, struct _Binder *, Binder, VARIANT, Target, SAFEARRAY*, args_entry, VARIANT*, pRetVal);
+
+	//Safe Array mocks
 	DECLARE_GLOBAL_MOCK_METHOD_3(CDOTNETMocks, SAFEARRAY *, __stdcall, myTest_SafeArrayCreateVector, VARTYPE, vt, LONG, lLbound, ULONG, cElements);
 	
 	DECLARE_GLOBAL_MOCK_METHOD_3(CDOTNETMocks, HRESULT, __stdcall, myTest_SafeArrayPutElement, SAFEARRAY *, psa, LONG*, rgIndices, void *, pv);
 
-	DECLARE_GLOBAL_MOCK_METHOD_8(CDOTNETMocks, HRESULT, __stdcall, CreateInstance_3, BSTR, typeName, VARIANT_BOOL, ignoreCase, enum BindingFlags, bindingAttr, struct _Binder*, Binder, SAFEARRAY*, args, struct _CultureInfo*, culture, SAFEARRAY *, activationAttributes, VARIANT*, pRetVal);
+	DECLARE_GLOBAL_MOCK_METHOD_3(CDOTNETMocks, SAFEARRAY *, __stdcall, myTest_SafeArrayCreate, VARTYPE, vt, UINT, cDims, SAFEARRAYBOUND *, rgsabound);
 
-	DECLARE_GLOBAL_MOCK_METHOD_2(CDOTNETMocks, HRESULT, __stdcall, CreateInstance, BSTR, typeName, VARIANT *, pRetVal);
-
+	DECLARE_GLOBAL_MOCK_METHOD_2(CDOTNETMocks, HRESULT, __stdcall, myTest_SafeArrayAccessData, SAFEARRAY *, psa, void**, ppvData);
+	
 	DECLARE_GLOBAL_MOCK_METHOD_1(CDOTNETMocks, HRESULT, __stdcall, myTest_SafeArrayDestroy, SAFEARRAY *, psa);
 
-	DECLARE_GLOBAL_MOCK_METHOD_6(CDOTNETMocks, HRESULT, __stdcall, InvokeMember_3, BSTR, name, enum BindingFlags, invokeAttr, struct _Binder *, Binder, VARIANT, Target, SAFEARRAY*, args_entry, VARIANT*, pRetVal);
+	DECLARE_GLOBAL_MOCK_METHOD_1(CDOTNETMocks, HRESULT, __stdcall, myTest_SafeArrayUnaccessData, SAFEARRAY *, psa)
+		
+	//Message Mocks
+	DECLARE_GLOBAL_MOCK_METHOD_2(CDOTNETMocks, , const unsigned char*, Message_ToByteArray, MESSAGE_HANDLE, messageHandle, int32_t *, size);
+
 }
 
 HRESULT myICLRMetaHost::GetRuntime(
@@ -2966,6 +2995,10 @@ BEGIN_TEST_SUITE(dotnet_unittests)
 	/* Tests_SRS_DOTNET_04_007: [ DotNET_Create shall return a non-NULL MODULE_HANDLE when successful. ] */
 	/* Tests_SRS_DOTNET_04_008: [ DotNET_Create shall allocate memory for an instance of the DOTNET_HOST_HANDLE_DATA structure and use that as the backing structure for the module handle. ] */
 	/* Tests_SRS_DOTNET_04_012: [ DotNET_Create shall get the 3 CLR Host Interfaces (CLRMetaHost, CLRRuntimeInfo and CorRuntimeHost) and save it on DOTNET_HOST_HANDLE_DATA. ] */
+	/* Tests_SRS_DOTNET_04_009: [ DotNET_Create shall create an instance of .NET client Module and save it on DOTNET_HOST_HANDLE_DATA. ] */
+	/* Tests_SRS_DOTNET_04_010: [ DotNET_Create shall save Client module Type, AzureIoTGateway Message Class and Azure IoT Gateway Assembly and on DOTNET_HOST_HANDLE_DATA. ] */
+	/* Tests_SRS_DOTNET_04_013: [ A .NET Object conforming to the MessageBus interface defined shall be created: ] */
+	/* Tests_SRS_DOTNET_04_014: [ DotNET_Create shall call Create C# method, implemented from IGatewayModule, passing the MessageBus object created and configuration->dotnet_module_args. ] */
 	TEST_FUNCTION(DotNET_Create_succeed)
 	{
 		///arrage
@@ -3064,8 +3097,538 @@ BEGIN_TEST_SUITE(dotnet_unittests)
 		theAPIS->Module_Destroy((MODULE_HANDLE)result);
 	}
 
+	/* Tests_SRS_DOTNET_04_015: [ DotNET_Receive shall do nothing if module is NULL. ] */
+	TEST_FUNCTION(DotNET_Receive_does_nothing_when_modulehandle_is_Null)
+	{
+		///arrage
+		CDOTNETMocks mocks;
+		const MODULE_APIS* theAPIS = Module_GetAPIS();
+
+		mocks.ResetAllCalls();
+
+		///act
+		theAPIS->Module_Receive(NULL,(MESSAGE_HANDLE)0x42);
+
+		///assert
+		mocks.AssertActualAndExpectedCalls();
+
+		///cleanup
+	}
+
+	/* Tests_SRS_DOTNET_04_016: [ DotNET_Receive shall do nothing if message is NULL. ] */
+	TEST_FUNCTION(DotNET_Receive_does_nothing_when_message_is_Null)
+	{
+		///arrage
+		CDOTNETMocks mocks;
+		const MODULE_APIS* theAPIS = Module_GetAPIS();
+
+		mocks.ResetAllCalls();
+
+		///act
+		theAPIS->Module_Receive((MODULE_HANDLE)0x42, NULL);
+
+		///assert
+		mocks.AssertActualAndExpectedCalls();
+
+		///cleanup
+	}
+
+	/* Tests_SRS_DOTNET_04_017: [ DotNET_Receive shall construct an instance of the Message interface as defined below: ] */
+	TEST_FUNCTION(DotNET_Receive__does_nothing_when_Message_ToByteArray_fails)
+	{
+		///arrage
+		CDOTNETMocks mocks;
+		const MODULE_APIS* theAPIS = Module_GetAPIS();
+
+		mocks.ResetAllCalls();
+
+		STRICT_EXPECTED_CALL(mocks, Message_ToByteArray((MESSAGE_HANDLE)0x42, IGNORED_PTR_ARG))
+			.IgnoreArgument(2)
+			.SetFailReturn((const unsigned char*)NULL);
+
+		///act
+		theAPIS->Module_Receive((MODULE_HANDLE)0x42, (MESSAGE_HANDLE)0x42);
+
+		///assert
+		mocks.AssertActualAndExpectedCalls();
+
+		///cleanup
+	}
+
+	/* Tests_SRS_DOTNET_04_017: [ DotNET_Receive shall construct an instance of the Message interface as defined below: ] */
+	TEST_FUNCTION(DotNET_Receive__does_nothing_when_CreateSafeArray_fails)
+	{
+		///arrage
+		CDOTNETMocks mocks;
+		const MODULE_APIS* theAPIS = Module_GetAPIS();
+
+		mocks.ResetAllCalls();
+
+		STRICT_EXPECTED_CALL(mocks, Message_ToByteArray((MESSAGE_HANDLE)0x42, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreate(VT_UI1, 1, IGNORED_PTR_ARG))
+			.IgnoreArgument(3)
+			.SetFailReturn((SAFEARRAY*)NULL);
 
 
+		///act
+		theAPIS->Module_Receive((MODULE_HANDLE)0x42, (MESSAGE_HANDLE)0x42);
+
+		///assert
+		mocks.AssertActualAndExpectedCalls();
+
+		///cleanup
+	}
+
+	
+	/* Tests_SRS_DOTNET_04_017: [ DotNET_Receive shall construct an instance of the Message interface as defined below: ] */
+	TEST_FUNCTION(DotNET_Receive__does_nothing_when_SafeArrayAccessData_fails)
+	{
+		///arrage
+		CDOTNETMocks mocks;
+		const MODULE_APIS* theAPIS = Module_GetAPIS();
+
+		mocks.ResetAllCalls();
+
+		STRICT_EXPECTED_CALL(mocks, Message_ToByteArray((MESSAGE_HANDLE)0x42, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreate(VT_UI1, 1, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayAccessData(IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments()
+			.SetFailReturn((HRESULT)E_POINTER);
+
+
+		///act
+		theAPIS->Module_Receive((MODULE_HANDLE)0x42, (MESSAGE_HANDLE)0x42);
+
+		///assert
+		mocks.AssertActualAndExpectedCalls();
+
+		///cleanup
+	}
+
+	
+	/* Tests_SRS_DOTNET_04_017: [ DotNET_Receive shall construct an instance of the Message interface as defined below: ] */
+	TEST_FUNCTION(DotNET_Receive__does_nothing_when_SafeArrayUnaccessData_fails)
+	{
+		///arrage
+		CDOTNETMocks mocks;
+		const MODULE_APIS* theAPIS = Module_GetAPIS();
+
+		mocks.ResetAllCalls();
+
+		STRICT_EXPECTED_CALL(mocks, Message_ToByteArray((MESSAGE_HANDLE)0x42, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreate(VT_UI1, 1, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayAccessData(IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayUnaccessData(IGNORED_PTR_ARG))
+			.IgnoreAllArguments()
+			.SetFailReturn((HRESULT)E_POINTER);
+
+
+
+		///act
+		theAPIS->Module_Receive((MODULE_HANDLE)0x42, (MESSAGE_HANDLE)0x42);
+
+		///assert
+		mocks.AssertActualAndExpectedCalls();
+
+		///cleanup
+	}
+
+	/* Tests_SRS_DOTNET_04_017: [ DotNET_Receive shall construct an instance of the Message interface as defined below: ] */
+	TEST_FUNCTION(DotNET_Receive__does_nothing_when_SafeArrayCreateVector_for_Message_Constructor_fails)
+	{
+		///arrage
+		CDOTNETMocks mocks;
+		const MODULE_APIS* theAPIS = Module_GetAPIS();
+
+		mocks.ResetAllCalls();
+
+		STRICT_EXPECTED_CALL(mocks, Message_ToByteArray((MESSAGE_HANDLE)0x42, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreate(VT_UI1, 1, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayAccessData(IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayUnaccessData(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 1))
+			.SetFailReturn((SAFEARRAY*)NULL);
+
+
+
+		///act
+		theAPIS->Module_Receive((MODULE_HANDLE)0x42, (MESSAGE_HANDLE)0x42);
+
+		///assert
+		mocks.AssertActualAndExpectedCalls();
+
+		///cleanup
+	}
+
+	/* Tests_SRS_DOTNET_04_017: [ DotNET_Receive shall construct an instance of the Message interface as defined below: ] */
+	TEST_FUNCTION(DotNET_Receive__does_nothing_when_SafeArrayPutElement_for_Message_Constructor_fails)
+	{
+		///arrage
+		CDOTNETMocks mocks;
+		const MODULE_APIS* theAPIS = Module_GetAPIS();
+
+		mocks.ResetAllCalls();
+
+		STRICT_EXPECTED_CALL(mocks, Message_ToByteArray((MESSAGE_HANDLE)0x42, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreate(VT_UI1, 1, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayAccessData(IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayUnaccessData(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 1));
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayPutElement(IGNORED_PTR_ARG, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments()
+			.SetFailReturn((HRESULT)E_POINTER);
+
+
+
+		///act
+		theAPIS->Module_Receive((MODULE_HANDLE)0x42, (MESSAGE_HANDLE)0x42);
+
+		///assert
+		mocks.AssertActualAndExpectedCalls();
+
+		///cleanup
+	}
+
+	/* Tests_SRS_DOTNET_04_017: [ DotNET_Receive shall construct an instance of the Message interface as defined below: ] */
+	TEST_FUNCTION(DotNET_Receive__does_nothing_when_Create_Instance_3_for_Message_Constructor_fails)
+	{
+		///arrage
+		CDOTNETMocks mocks;
+		const MODULE_APIS* theAPIS = Module_GetAPIS();
+		bstr_t bstrAzureIoTGatewayMessageClassName(L"Microsoft.Azure.IoT.Gateway.Message");
+		DOTNET_HOST_CONFIG dotNetConfig;
+		dotNetConfig.dotnet_module_path = "/path/to/csharp_module.dll";
+		dotNetConfig.dotnet_module_entry_class = "mycsharpmodule.classname";
+		dotNetConfig.dotnet_module_args = "module configuration";
+
+		auto  result = theAPIS->Module_Create((MESSAGE_BUS_HANDLE)0x42, &dotNetConfig);
+
+		mocks.ResetAllCalls();
+
+		STRICT_EXPECTED_CALL(mocks, Message_ToByteArray((MESSAGE_HANDLE)0x42, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreate(VT_UI1, 1, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayAccessData(IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayUnaccessData(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 1));
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayPutElement(IGNORED_PTR_ARG, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+	
+		STRICT_EXPECTED_CALL(mocks, CreateInstance_3(bstrAzureIoTGatewayMessageClassName, true, static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public), NULL, IGNORED_PTR_ARG,NULL, NULL, IGNORED_PTR_ARG))
+			.IgnoreArgument(5)
+			.IgnoreArgument(8)
+			.SetFailReturn((HRESULT)E_POINTER);
+
+
+		///act
+		theAPIS->Module_Receive((MODULE_HANDLE)result, (MESSAGE_HANDLE)0x42);
+
+		///assert
+		mocks.AssertActualAndExpectedCalls();
+
+		///cleanup
+	}
+
+	/* Tests_SRS_DOTNET_04_018: [ DotNET_Create shall call Receive C# method passing the Message object created with the content of message serialized into Message object. ] */
+	TEST_FUNCTION(DotNET_Receive__does_nothing_when_SafeArrayCreateVector_For_Receive_Argument_fails)
+	{
+		///arrage
+		CDOTNETMocks mocks;
+		const MODULE_APIS* theAPIS = Module_GetAPIS();
+		bstr_t bstrAzureIoTGatewayMessageClassName(L"Microsoft.Azure.IoT.Gateway.Message");
+		DOTNET_HOST_CONFIG dotNetConfig;
+		dotNetConfig.dotnet_module_path = "/path/to/csharp_module.dll";
+		dotNetConfig.dotnet_module_entry_class = "mycsharpmodule.classname";
+		dotNetConfig.dotnet_module_args = "module configuration";
+
+		auto  result = theAPIS->Module_Create((MESSAGE_BUS_HANDLE)0x42, &dotNetConfig);
+
+		mocks.ResetAllCalls();
+
+		STRICT_EXPECTED_CALL(mocks, Message_ToByteArray((MESSAGE_HANDLE)0x42, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreate(VT_UI1, 1, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayAccessData(IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayUnaccessData(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 1));
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayPutElement(IGNORED_PTR_ARG, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, CreateInstance_3(bstrAzureIoTGatewayMessageClassName, true, static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public), NULL, IGNORED_PTR_ARG, NULL, NULL, IGNORED_PTR_ARG))
+			.IgnoreArgument(5)
+			.IgnoreArgument(8);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 1))
+			.SetFailReturn((SAFEARRAY*)NULL);
+
+
+		///act
+		theAPIS->Module_Receive((MODULE_HANDLE)result, (MESSAGE_HANDLE)0x42);
+
+		///assert
+		mocks.AssertActualAndExpectedCalls();
+
+		///cleanup
+	}
+
+	/* Tests_SRS_DOTNET_04_018: [ DotNET_Create shall call Receive C# method passing the Message object created with the content of message serialized into Message object. ] */
+	TEST_FUNCTION(DotNET_Receive__does_nothing_when_SafeArrayPutElement_For_Receive_Argument_fails)
+	{
+		///arrage
+		CDOTNETMocks mocks;
+		const MODULE_APIS* theAPIS = Module_GetAPIS();
+		bstr_t bstrAzureIoTGatewayMessageClassName(L"Microsoft.Azure.IoT.Gateway.Message");
+		DOTNET_HOST_CONFIG dotNetConfig;
+		dotNetConfig.dotnet_module_path = "/path/to/csharp_module.dll";
+		dotNetConfig.dotnet_module_entry_class = "mycsharpmodule.classname";
+		dotNetConfig.dotnet_module_args = "module configuration";
+
+		auto  result = theAPIS->Module_Create((MESSAGE_BUS_HANDLE)0x42, &dotNetConfig);
+
+		mocks.ResetAllCalls();
+
+		STRICT_EXPECTED_CALL(mocks, Message_ToByteArray((MESSAGE_HANDLE)0x42, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreate(VT_UI1, 1, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayAccessData(IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayUnaccessData(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 1));
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayPutElement(IGNORED_PTR_ARG, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, CreateInstance_3(bstrAzureIoTGatewayMessageClassName, true, static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public), NULL, IGNORED_PTR_ARG, NULL, NULL, IGNORED_PTR_ARG))
+			.IgnoreArgument(5)
+			.IgnoreArgument(8);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 1));
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayPutElement(IGNORED_PTR_ARG, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments()
+			.SetFailReturn((HRESULT)E_POINTER);
+
+
+		///act
+		theAPIS->Module_Receive((MODULE_HANDLE)result, (MESSAGE_HANDLE)0x42);
+
+		///assert
+		mocks.AssertActualAndExpectedCalls();
+
+		///cleanup
+	}
+
+	/* Tests_SRS_DOTNET_04_018: [ DotNET_Create shall call Receive C# method passing the Message object created with the content of message serialized into Message object. ] */
+	TEST_FUNCTION(DotNET_Receive__does_nothing_when_InvokeMember_3_For_Receive_Argument_fails)
+	{
+		///arrage
+		CDOTNETMocks mocks;
+		const MODULE_APIS* theAPIS = Module_GetAPIS();
+		bstr_t bstrAzureIoTGatewayMessageClassName(L"Microsoft.Azure.IoT.Gateway.Message");
+		DOTNET_HOST_CONFIG dotNetConfig;
+		dotNetConfig.dotnet_module_path = "/path/to/csharp_module.dll";
+		dotNetConfig.dotnet_module_entry_class = "mycsharpmodule.classname";
+		dotNetConfig.dotnet_module_args = "module configuration";
+		bstr_t bstrReceiveClientMethodName(L"Receive");
+		variant_t emptyVariant(0);
+
+		auto  result = theAPIS->Module_Create((MESSAGE_BUS_HANDLE)0x42, &dotNetConfig);
+
+		mocks.ResetAllCalls();
+
+		STRICT_EXPECTED_CALL(mocks, Message_ToByteArray((MESSAGE_HANDLE)0x42, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreate(VT_UI1, 1, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayAccessData(IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayUnaccessData(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 1));
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayPutElement(IGNORED_PTR_ARG, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, CreateInstance_3(bstrAzureIoTGatewayMessageClassName, true, static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public), NULL, IGNORED_PTR_ARG, NULL, NULL, IGNORED_PTR_ARG))
+			.IgnoreArgument(5)
+			.IgnoreArgument(8);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 1));
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayPutElement(IGNORED_PTR_ARG, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, InvokeMember_3(bstrReceiveClientMethodName, static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public | BindingFlags_InvokeMethod), NULL, emptyVariant, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreArgument(4)
+			.IgnoreArgument(5)
+			.IgnoreArgument(6)
+			.SetFailReturn((HRESULT)E_POINTER);
+
+
+		///act
+		theAPIS->Module_Receive((MODULE_HANDLE)result, (MESSAGE_HANDLE)0x42);
+
+		///assert
+		mocks.AssertActualAndExpectedCalls();
+
+		///cleanup
+	}
+
+	/* Tests_SRS_DOTNET_04_018: [ DotNET_Create shall call Receive C# method passing the Message object created with the content of message serialized into Message object. ] */
+	TEST_FUNCTION(DotNET_succeed)
+	{
+		///arrage
+		CDOTNETMocks mocks;
+		const MODULE_APIS* theAPIS = Module_GetAPIS();
+		bstr_t bstrAzureIoTGatewayMessageClassName(L"Microsoft.Azure.IoT.Gateway.Message");
+		DOTNET_HOST_CONFIG dotNetConfig;
+		dotNetConfig.dotnet_module_path = "/path/to/csharp_module.dll";
+		dotNetConfig.dotnet_module_entry_class = "mycsharpmodule.classname";
+		dotNetConfig.dotnet_module_args = "module configuration";
+		bstr_t bstrReceiveClientMethodName(L"Receive");
+		variant_t emptyVariant(0);
+
+		auto  result = theAPIS->Module_Create((MESSAGE_BUS_HANDLE)0x42, &dotNetConfig);
+
+		mocks.ResetAllCalls();
+
+		STRICT_EXPECTED_CALL(mocks, Message_ToByteArray((MESSAGE_HANDLE)0x42, IGNORED_PTR_ARG))
+			.IgnoreArgument(2);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreate(VT_UI1, 1, IGNORED_PTR_ARG))
+			.IgnoreArgument(3);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayAccessData(IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayUnaccessData(IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 1));
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayPutElement(IGNORED_PTR_ARG, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, CreateInstance_3(bstrAzureIoTGatewayMessageClassName, true, static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public), NULL, IGNORED_PTR_ARG, NULL, NULL, IGNORED_PTR_ARG))
+			.IgnoreArgument(5)
+			.IgnoreArgument(8);
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayCreateVector(VT_VARIANT, 0, 1));
+
+		STRICT_EXPECTED_CALL(mocks, myTest_SafeArrayPutElement(IGNORED_PTR_ARG, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreAllArguments();
+
+		STRICT_EXPECTED_CALL(mocks, InvokeMember_3(bstrReceiveClientMethodName, static_cast<BindingFlags>(BindingFlags_Instance | BindingFlags_Public | BindingFlags_InvokeMethod), NULL, emptyVariant, IGNORED_PTR_ARG, IGNORED_PTR_ARG))
+			.IgnoreArgument(4)
+			.IgnoreArgument(5)
+			.IgnoreArgument(6);
+
+
+		///act
+		theAPIS->Module_Receive((MODULE_HANDLE)result, (MESSAGE_HANDLE)0x42);
+
+		///assert
+		mocks.AssertActualAndExpectedCalls();
+
+		///cleanup
+	}
+
+	/* Tests_SRS_DOTNET_04_019: [ DotNET_Destroy shall do nothing if module is NULL. ] */
+	TEST_FUNCTION(DotNET_Destroy_does_nothing_when_module_is_Null)
+	{
+		///arrage
+		CDOTNETMocks mocks;
+		const MODULE_APIS* theAPIS = Module_GetAPIS();
+
+		mocks.ResetAllCalls();
+
+		///act
+		theAPIS->Module_Destroy((MODULE_HANDLE)NULL);
+
+		///assert
+		mocks.AssertActualAndExpectedCalls();
+		
+		///cleanup
+	}
+
+	/* Tests_SRS_DOTNET_04_020: [ DotNET_Destroy shall free all resources associated with the given module.. ] */
+	TEST_FUNCTION(DotNET_Destroy_release_resources)
+	{
+		///arrage
+		CDOTNETMocks mocks;
+		const MODULE_APIS* theAPIS = Module_GetAPIS();
+		DOTNET_HOST_CONFIG dotNetConfig;
+		dotNetConfig.dotnet_module_path = "/path/to/csharp_module.dll";
+		dotNetConfig.dotnet_module_entry_class = "mycsharpmodule.classname";
+		dotNetConfig.dotnet_module_args = "module configuration";
+
+		auto  result = theAPIS->Module_Create((MESSAGE_BUS_HANDLE)0x42, &dotNetConfig);
+
+		mocks.ResetAllCalls();
+
+		///act
+		theAPIS->Module_Destroy(result);
+
+		///assert
+		mocks.AssertActualAndExpectedCalls();
+
+		///cleanup
+	}
 
 	/* Tests_SRS_DOTNET_04_021: [ Module_GetAPIS shall return a non-NULL pointer to a structure of type MODULE_APIS that has all fields initialized to non-NULL values. ] */
 	TEST_FUNCTION(DotNET_Module_GetAPIS_returns_non_NULL)
@@ -3073,6 +3636,7 @@ BEGIN_TEST_SUITE(dotnet_unittests)
 		///arrage
 		CDOTNETMocks mocks;
 
+		mocks.ResetAllCalls();
 		///act
 		const MODULE_APIS* apis = Module_GetAPIS();
 
