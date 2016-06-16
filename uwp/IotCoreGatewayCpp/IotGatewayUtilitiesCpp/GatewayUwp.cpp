@@ -1,14 +1,12 @@
 #include "pch.h"
 
-#define UWP
-#define WIN32
-
 #include "GatewayUwp.h"
 #include "MessageBusUwp.h"
 #include "MessageUwp.h"
 
 using namespace Windows::Foundation::Collections;
 using namespace IotCoreGatewayUtilitiesCpp;
+
 
 ref class Message;
 

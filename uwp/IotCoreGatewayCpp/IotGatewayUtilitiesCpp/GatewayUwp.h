@@ -1,8 +1,6 @@
 #pragma once
 #include "pch.h"
 
-#define UWP
-#define WIN32
 
 #include "..\..\..\core\inc\gateway.h"
 #include "ModuleUwp.h"
