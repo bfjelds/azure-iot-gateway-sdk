@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "Module.h"
+#include "ModuleUwp.h"
 
 using namespace IotCoreGatewayUtilitiesCpp;
 

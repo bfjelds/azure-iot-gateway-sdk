@@ -38,11 +38,11 @@ GATEWAY_HANDLE Gateway_LL_Create(const GATEWAY_PROPERTIES* properties)
 {
 	/*Codes_SRS_GATEWAY_LL_14_001: [This function shall create a GATEWAY_HANDLE representing the newly created gateway.]*/
 	GATEWAY_HANDLE_DATA* gateway = (GATEWAY_HANDLE_DATA*)malloc(sizeof(GATEWAY_HANDLE_DATA));
-	if (gateway != NULL) 
+	if (gateway != NULL)
 	{
 		/*Codes_SRS_GATEWAY_LL_14_003: [This function shall create a new MESSAGE_BUS_HANDLE for the gateway representing this gateway's message bus. ]*/
 		gateway->bus = MessageBus_Create();
-		if (gateway->bus == NULL) 
+		if (gateway->bus == NULL)
 		{
 			/*Codes_SRS_GATEWAY_LL_14_004: [This function shall return NULL if a MESSAGE_BUS_HANDLE cannot be created.]*/
 			free(gateway);
@@ -71,13 +71,13 @@ GATEWAY_HANDLE Gateway_LL_Create(const GATEWAY_PROPERTIES* properties)
 					if (entries_count > 0)
 					{
 						//Add the first module, if successfull add others
-						GATEWAY_PROPERTIES_ENTRY* entry = VECTOR_element(properties->gateway_properties_entries, 0);
+						GATEWAY_PROPERTIES_ENTRY* entry = (GATEWAY_PROPERTIES_ENTRY*)VECTOR_element(properties->gateway_properties_entries, 0);
 						MODULE_HANDLE module = gateway_addmodule_internal(gateway, entry->module_path, entry->module_configuration);
 
 						//Continue adding modules until all are added or one fails
 						for (size_t properties_index = 1; properties_index < entries_count && module != NULL; ++properties_index)
 						{
-							entry = VECTOR_element(properties->gateway_properties_entries, properties_index);
+							entry = (GATEWAY_PROPERTIES_ENTRY*)VECTOR_element(properties->gateway_properties_entries, properties_index);
 							module = gateway_addmodule_internal(gateway, entry->module_path, entry->module_configuration);
 						}
 
@@ -102,7 +102,77 @@ GATEWAY_HANDLE Gateway_LL_Create(const GATEWAY_PROPERTIES* properties)
 		}
 	}
 	/*Codes_SRS_GATEWAY_LL_14_002: [This function shall return NULL upon any memory allocation failure.]*/
-	else 
+	else
+	{
+		LogError("Gateway_LL_Create(): malloc failed.");
+	}
+
+	return gateway;
+}
+
+GATEWAY_HANDLE Gateway_LL_Create2(const VECTOR_HANDLE modules, MESSAGE_BUS_HANDLE bus)
+{
+	/*Codes_SRS_GATEWAY_LL_14_001: [This function shall create a GATEWAY_HANDLE representing the newly created gateway.]*/
+	GATEWAY_HANDLE_DATA* gateway = (GATEWAY_HANDLE_DATA*)malloc(sizeof(GATEWAY_HANDLE_DATA));
+	if (gateway != NULL)
+	{
+		/*Codes_SRS_GATEWAY_LL_14_003: [This function shall create a new MESSAGE_BUS_HANDLE for the gateway representing this gateway's message bus. ]*/
+		gateway->bus = bus;
+		if (gateway->bus == NULL)
+		{
+			/*Codes_SRS_GATEWAY_LL_14_004: [This function shall return NULL if a MESSAGE_BUS_HANDLE cannot be created.]*/
+			free(gateway);
+			gateway = NULL;
+			LogError("Gateway_LL_Create(): MessageBus_Create() failed.");
+		}
+		else
+		{
+			/*Codes_SRS_GATEWAY_LL_14_033: [ The function shall create a vector to store each MODULE_DATA. ]*/
+			gateway->modules = modules;
+			if (gateway->modules == NULL)
+			{
+				/*Codes_SRS_GATEWAY_LL_14_034: [ This function shall return NULL if a VECTOR_HANDLE cannot be created. ]*/
+				/*Codes_SRS_GATEWAY_LL_14_035: [ This function shall destroy the previously created MESSAGE_BUS_HANDLE and free the GATEWAY_HANDLE if the VECTOR_HANDLE cannot be created. ]*/
+				MessageBus_Destroy(gateway->bus);
+				free(gateway);
+				gateway = NULL;
+				LogError("Gateway_LL_Create(): VECTOR_create failed.");
+			}
+			else
+			{
+				size_t entries_count = VECTOR_size(gateway->modules);
+
+				//Continue adding modules until all are added or one fails
+				for (size_t index = 0; index < entries_count; ++index)
+				{
+					MODULE* module = (MODULE*)VECTOR_element(gateway->modules, index);
+
+					/*Codes_SRS_GATEWAY_LL_14_036: [ If any MODULE_HANDLE is unable to be created from a GATEWAY_PROPERTIES_ENTRY the GATEWAY_HANDLE will be destroyed. ]*/
+					if (module != NULL)
+					{
+						if (MessageBus_AddModule(gateway->bus, module) != MESSAGE_BUS_OK)
+						{
+							// TODO: cleanup for error case
+							// module_apis->Module_Destroy(module_handle);
+							// VECTOR_destroy(gateway->modules);
+							// MessageBus_Destroy(gateway->bus);
+							// free(gateway);
+							// gateway = NULL;
+							LogError("Failed to add module to the gateway bus.");
+						}
+						else
+						{
+							/*Codes_SRS_GATEWAY_LL_14_039: [ The function shall increment the MESSAGE_BUS_HANDLE reference count if the MODULE_HANDLE was successfully linked to the GATEWAY_HANDLE_DATA's bus. ]*/
+							MessageBus_IncRef(gateway->bus);
+						}
+
+					}
+				}
+			}
+		}
+	}
+	/*Codes_SRS_GATEWAY_LL_14_002: [This function shall return NULL upon any memory allocation failure.]*/
+	else
 	{
 		LogError("Gateway_LL_Create(): malloc failed.");
 	}
@@ -169,7 +239,7 @@ void Gateway_LL_RemoveModule(GATEWAY_HANDLE gw, MODULE_HANDLE module)
 		GATEWAY_HANDLE_DATA* gateway_handle = (GATEWAY_HANDLE_DATA*)gw;
 
 		/*Codes_SRS_GATEWAY_LL_14_023: [The function shall locate the MODULE_DATA object in GATEWAY_HANDLE_DATA's modules containing module and return if it cannot be found. ]*/
-		MODULE_DATA* module_data = VECTOR_find_if(gateway_handle->modules, module_data_find, module);
+		MODULE_DATA* module_data = (MODULE_DATA*)VECTOR_find_if(gateway_handle->modules, module_data_find, module);
 
 		if (module_data != NULL)
 		{
@@ -208,9 +278,9 @@ static MODULE_HANDLE gateway_addmodule_internal(GATEWAY_HANDLE_DATA* gateway_han
 			const MODULE_APIS* module_apis = ModuleLoader_GetModuleAPIs(module_library_handle);
 
 			/*Codes_SRS_GATEWAY_LL_14_015: [The function shall use the MODULE_APIS to create a MODULE_HANDLE using the GATEWAY_PROPERTIES_ENTRY's module_configuration. ]*/
-			MODULE_HANDLE module = module_apis->Module_Create(gateway_handle->bus, module_configuration);
-			/*Codes_SRS_GATEWAY_LL_14_016: [If the module creation is unsuccessful, the function shall return NULL.]*/
-			if (module == NULL)
+			MODULE_HANDLE module_handle = module_apis->Module_Create(gateway_handle->bus, module_configuration);
+			/*Codes_SRS_GATEWAY_LL_14_016: [If the module_handle creation is unsuccessful, the function shall return NULL.]*/
+			if (module_handle == NULL)
 			{
 				module_result = NULL;
 				ModuleLoader_Unload(module_library_handle);
@@ -218,9 +288,21 @@ static MODULE_HANDLE gateway_addmodule_internal(GATEWAY_HANDLE_DATA* gateway_han
 			}
 			else
 			{
+				MODULE_C_STYLE module_c =
+				{
+					module_apis,
+					module_handle
+				};
+
+				MODULE module = 
+				{
+					NATIVE_C_TYPE,
+					(MODULE_DATA_TYPED)&module_c
+				};
+
 				/*Codes_SRS_GATEWAY_LL_14_017: [The function shall link the module to the GATEWAY_HANDLE_DATA's bus using a call to MessageBus_AddModule. ]*/
 				/*Codes_SRS_GATEWAY_LL_14_018: [If the message bus linking is unsuccessful, the function shall return NULL.]*/
-				if (MessageBus_AddModule(gateway_handle->bus, module, module_apis) != MESSAGE_BUS_OK)
+				if (MessageBus_AddModule(gateway_handle->bus, &module) != MESSAGE_BUS_OK)
 				{
 					module_result = NULL;
 					LogError("Failed to add module to the gateway bus.");
@@ -233,30 +315,30 @@ static MODULE_HANDLE gateway_addmodule_internal(GATEWAY_HANDLE_DATA* gateway_han
 					MODULE_DATA module_data = 
 					{
 						module_library_handle,
-						module
+						module_handle
 					};
 					/*Codes_SRS_GATEWAY_LL_14_032: [The function shall add the new MODULE_DATA to GATEWAY_HANDLE_DATA's modules if the module was successfully linked to the message bus. ]*/
 					if (VECTOR_push_back(gateway_handle->modules, &module_data, 1) != 0)
 					{
 						MessageBus_DecRef(gateway_handle->bus);
 						module_result = NULL;
-						if (MessageBus_RemoveModule(gateway_handle->bus, module) != MESSAGE_BUS_OK)
+						if (MessageBus_RemoveModule(gateway_handle->bus, module_handle) != MESSAGE_BUS_OK)
 						{
-							LogError("Failed to remove module [%p] from the gateway message bus. This module will remain linked.", module);
+							LogError("Failed to remove module [%p] from the gateway message bus. This module will remain linked.", module_handle);
 						}
 						LogError("Unable to add MODULE_DATA* to the gateway module vector.");
 					}
 					else
 					{
 						/*Codes_SRS_GATEWAY_LL_14_019: [The function shall return the newly created MODULE_HANDLE only if each API call returns successfully.]*/
-						module_result = module;
+						module_result = module_handle;
 					}
 				}
 
 				/*Codes_SRS_GATEWAY_LL_14_030: [If any internal API call is unsuccessful after a module is created, the library will be unloaded and the module destroyed.]*/
 				if (module_result == NULL)
 				{
-					module_apis->Module_Destroy(module);
+					module_apis->Module_Destroy(module_handle);
 					ModuleLoader_Unload(module_library_handle);
 				}
 			}

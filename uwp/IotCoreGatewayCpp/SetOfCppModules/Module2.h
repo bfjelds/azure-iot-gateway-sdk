@@ -10,6 +10,6 @@ namespace SetOfCppModules
 		// Inherited via IModule
 		virtual void Create(IotCoreGatewayUtilitiesCpp::MessageBus ^bus, Platform::String ^configuration);
 		virtual void Destroy();
-		virtual void Receive(IotCoreGatewayUtilitiesCpp::Message ^received_message);
+		virtual void Receive(IotCoreGatewayUtilitiesCpp::IModule ^source, IotCoreGatewayUtilitiesCpp::Message ^received_message);
 	};
 }

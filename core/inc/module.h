@@ -17,6 +17,7 @@
 #define MODULE_H
 
 /** @brief Represents a handle to a particular module.*/
+typedef struct MODULE_TAG MODULE;
 typedef void* MODULE_HANDLE;
 typedef struct MODULE_APIS_TAG MODULE_APIS;
 
@@ -28,6 +29,24 @@ typedef struct MODULE_APIS_TAG MODULE_APIS;
 extern "C"
 {
 #endif
+
+	typedef enum MODULE_TYPE_TAG
+	{
+		NATIVE_C_TYPE,
+		MODERN_CPP_TYPE
+	} MODULE_TYPE;
+
+	typedef void* MODULE_DATA_TYPED;
+
+	/** @brief	Structure used to represent/abstract the idea of a module.  May
+	*			contain Hamdle/FxnPtrs or an interface ptr or some unforseen
+	*           representation.
+	*/
+	typedef struct MODULE_TAG
+	{
+		MODULE_TYPE module_type;
+		MODULE_DATA_TYPED module_data;
+	}MODULE;
 
 	/** @brief		Creates a module using the specified configuration connecting
 	*				to the specified message bus.
@@ -79,7 +98,34 @@ extern "C"
         pfModule_Receive Module_Receive;
     }MODULE_APIS;
 
-	/** @brief	This is the only function exported by a module. Using the 
+	/** @brief	Structure used to represent/abstract the idea of a module.  May
+	*			contain Hamdle/FxnPtrs or an interface ptr or some unforseen
+	*           representation.
+	*/
+	typedef struct MODULE_C_STYLE_TAG
+	{
+		const MODULE_APIS* module_apis;
+		MODULE_HANDLE module_handle;
+	}MODULE_C_STYLE;
+
+	class IGatewayModule
+	{
+	public:
+		virtual void Module_Create(MESSAGE_BUS_HANDLE busHandle, const void* configuration) = 0;
+		virtual void Module_Destroy() = 0;
+		virtual void Module_Receive(MODULE_HANDLE moduleHandle, MESSAGE_HANDLE messageHandle) = 0;
+	};
+
+	/** @brief	Structure used to represent/abstract the idea of a module.  May
+	*			contain Hamdle/FxnPtrs or an interface ptr or some unforseen
+	*           representation.
+	*/
+	typedef struct MODULE_CPP_STYLE_TAG
+	{
+		const IGatewayModule* module_instance;
+	}MODULE_CPP_STYLE;
+
+	/** @brief	This is the only function exported by a module. Using the
 	*			exported function, the caller learns the functions for the 
 	*			particular module.
 	*/

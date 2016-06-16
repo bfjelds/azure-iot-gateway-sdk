@@ -12,7 +12,7 @@ namespace IotCoreGatewayCs
     public sealed class StartupTask : IBackgroundTask
     {
         BackgroundTaskDeferral deferral;
-        IotCoreGatewayUtilitiesCpp.MessageBus messageBus;
+        IotCoreGatewayUtilitiesCpp.Gateway gateway;
         public void Run(IBackgroundTaskInstance taskInstance)
         {
             deferral = taskInstance.GetDeferral();
@@ -21,7 +21,8 @@ namespace IotCoreGatewayCs
             modules.Add(new SetOfCsModules.Module2());
             modules.Add(new SetOfCsModules.Module1());
             modules.Add(new SetOfCsModules.Module3());
-            messageBus = new IotCoreGatewayUtilitiesCpp.MessageBus(modules);
+
+            gateway = new IotCoreGatewayUtilitiesCpp.Gateway(modules);
         }
     }
 }

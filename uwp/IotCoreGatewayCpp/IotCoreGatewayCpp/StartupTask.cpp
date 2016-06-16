@@ -9,7 +9,6 @@ using namespace Windows::ApplicationModel::Background;
 using namespace IotCoreGatewayUtilitiesCpp;
 using namespace SetOfCppModules;
 
-
 // The Background Application template is documented at http://go.microsoft.com/fwlink/?LinkID=533884&clcid=0x409
 
 void StartupTask::Run(IBackgroundTaskInstance^ taskInstance)
@@ -21,6 +20,6 @@ void StartupTask::Run(IBackgroundTaskInstance^ taskInstance)
 	modules->Append(ref new Module1());
 	modules->Append(ref new Module3());
 	
-	messageBus = ref new MessageBus(modules);
+	gateway = ref new Gateway(modules);
 }
 

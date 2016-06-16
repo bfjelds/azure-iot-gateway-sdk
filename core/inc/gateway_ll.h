@@ -51,15 +51,25 @@ typedef struct GATEWAY_PROPERTIES_DATA_TAG
 
 /** @brief		Creates a new gateway using the provided #GATEWAY_PROPERTIES.
 *
-*	@param		properties		#GATEWAY_PROPERTIES structure containing 
+*	@param		properties		#GATEWAY_PROPERTIES structure containing
 *								specific module properties and information.
 *
-*	@return		A non-NULL #GATEWAY_HANDLE that can be used to manage the 
+*	@return		A non-NULL #GATEWAY_HANDLE that can be used to manage the
 *				gateway or @c NULL on failure.
 */
 extern GATEWAY_HANDLE Gateway_LL_Create(const GATEWAY_PROPERTIES* properties);
 
-/** @brief		Destroys the gateway and disposes of all associated data. 
+/** @brief		Creates a new gateway using the provided #GATEWAY_PROPERTIES.
+*
+*	@param		properties		#GATEWAY_PROPERTIES structure containing
+*								specific module properties and information.
+*
+*	@return		A non-NULL #GATEWAY_HANDLE that can be used to manage the
+*				gateway or @c NULL on failure.
+*/
+extern GATEWAY_HANDLE Gateway_LL_Create2(const VECTOR_HANDLE modules, MESSAGE_BUS_HANDLE bus);
+
+/** @brief		Destroys the gateway and disposes of all associated data.
 *	
 *	@param		gw		#GATEWAY_HANDLE to be destroyed.
 */

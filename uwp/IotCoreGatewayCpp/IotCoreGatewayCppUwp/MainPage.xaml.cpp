@@ -36,5 +36,9 @@ void MainPage::DoStuff()
 	modules->Append(ref new SetOfCsModules::Module2());
 	modules->Append(ref new SetOfCsModules::Module1());
 	modules->Append(ref new SetOfCsModules::Module3());
-	messageBus = ref new IotCoreGatewayUtilitiesCpp::MessageBus(modules);
+	modules->Append(ref new SetOfCppModules::Module2());
+	modules->Append(ref new SetOfCppModules::Module1());
+	modules->Append(ref new SetOfCppModules::Module3());
+
+	gateway = ref new IotCoreGatewayUtilitiesCpp::Gateway(modules);
 }

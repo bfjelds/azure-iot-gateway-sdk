@@ -8,14 +8,32 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="Message.cpp" />
-    <ClCompile Include="MessageBus.cpp" />
-    <ClCompile Include="Module.cpp" />
+    <ClCompile Include="MessageBus_Interface.cpp" />
+    <ClCompile Include="VECTOR_Interface.cpp" />
+    <ClCompile Include="Lock_Interface.cpp" />
+    <ClCompile Include="List_Interface.cpp" />
+    <ClCompile Include="Condition_Interface.cpp" />
+    <ClCompile Include="ThreadAPI_Interface.cpp" />
+    <ClCompile Include="Message_Interface.cpp" />
+    <ClCompile Include="Compatibiliity.cpp" />
+    <ClCompile Include="ConstBuffer_Interface.cpp" />
+    <ClCompile Include="MessageUwp.cpp" />
+    <ClCompile Include="MessageBusUwp.cpp" />
+    <ClCompile Include="ModuleUwp.cpp" />
+    <ClCompile Include="Buffer_Interface.cpp" />
+    <ClCompile Include="Map_Interface.cpp" />
+    <ClCompile Include="Strings_Interface.cpp" />
+    <ClCompile Include="ConstMap_Interface.cpp" />
+    <ClCompile Include="CRT_Interface.cpp" />
+    <ClCompile Include="Gateway_ll_Interface.cpp" />
+    <ClCompile Include="Module_Loader_Interface.cpp" />
+    <ClCompile Include="GatewayUwp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Message.h" />
-    <ClInclude Include="MessageBus.h" />
-    <ClInclude Include="Module.h" />
+    <ClInclude Include="MessageUwp.h" />
+    <ClInclude Include="MessageBusUwp.h" />
+    <ClInclude Include="ModuleUwp.h" />
+    <ClInclude Include="GatewayUwp.h" />
   </ItemGroup>
 </Project>

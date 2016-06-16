@@ -115,6 +115,7 @@
     <ClCompile>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
+      <AdditionalIncludeDirectories>.;d:\git\azure-iot-gateway-sdk\core\inc;D:\git\azure-iot-gateway-sdk\deps\azure-c-shared-utility\inc;d:\git\azure-iot-gateway-sdk\core\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -186,6 +187,9 @@
   <ItemGroup>
     <ProjectReference Include="..\IotGatewayUtilitiesCpp\IotGatewayUtilitiesCpp.vcxproj">
       <Project>{73bc50be-df0f-4d95-8d15-5c5db4533801}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SetOfCppModules\SetOfCppModules.vcxproj">
+      <Project>{4af9d6c8-e041-43ce-9cdf-4ef809b1c0af}</Project>
     </ProjectReference>
     <ProjectReference Include="..\SetOfCsModules\SetOfCsModules.csproj">
       <Project>{f85f97da-7339-4516-bc3b-7e0deebc2623}</Project>

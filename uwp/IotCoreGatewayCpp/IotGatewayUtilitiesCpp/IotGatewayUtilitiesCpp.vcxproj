@@ -120,12 +120,13 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
+      <AdditionalIncludeDirectories>.;d:\git\azure-iot-gateway-sdk\core\inc;D:\git\azure-iot-gateway-sdk\deps\azure-c-shared-utility\inc;d:\git\azure-iot-gateway-sdk\core\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -208,15 +209,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Message.h" />
-    <ClInclude Include="MessageBus.h" />
-    <ClInclude Include="Module.h" />
+    <ClInclude Include="GatewayUwp.h" />
+    <ClInclude Include="MessageUwp.h" />
+    <ClInclude Include="MessageBusUwp.h" />
+    <ClInclude Include="ModuleUwp.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Message.cpp" />
-    <ClCompile Include="MessageBus.cpp" />
-    <ClCompile Include="Module.cpp" />
+    <ClCompile Include="Buffer_Interface.cpp" />
+    <ClCompile Include="Compatibiliity.cpp" />
+    <ClCompile Include="Condition_Interface.cpp" />
+    <ClCompile Include="ConstBuffer_Interface.cpp" />
+    <ClCompile Include="ConstMap_Interface.cpp" />
+    <ClCompile Include="CRT_Interface.cpp" />
+    <ClCompile Include="GatewayUwp.cpp" />
+    <ClCompile Include="Gateway_ll_Interface.cpp" />
+    <ClCompile Include="List_Interface.cpp" />
+    <ClCompile Include="Lock_Interface.cpp" />
+    <ClCompile Include="Map_Interface.cpp" />
+    <ClCompile Include="MessageUwp.cpp" />
+    <ClCompile Include="MessageBusUwp.cpp" />
+    <ClCompile Include="MessageBus_Interface.cpp" />
+    <ClCompile Include="Message_Interface.cpp" />
+    <ClCompile Include="ModuleUwp.cpp" />
+    <ClCompile Include="Module_Loader_Interface.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -225,6 +241,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Strings_Interface.cpp" />
+    <ClCompile Include="ThreadAPI_Interface.cpp" />
+    <ClCompile Include="VECTOR_Interface.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

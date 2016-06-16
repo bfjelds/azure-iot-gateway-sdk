@@ -12,6 +12,6 @@ namespace IotCoreGatewayCpp
 
 	private:
 		Windows::ApplicationModel::Background::BackgroundTaskDeferral ^deferral;
-		IotCoreGatewayUtilitiesCpp::MessageBus^ messageBus;
+		IotCoreGatewayUtilitiesCpp::Gateway ^gateway;
     };
 }

@@ -97,7 +97,7 @@ extern MESSAGE_BUS_RESULT MessageBus_Publish(MESSAGE_BUS_HANDLE bus, MODULE_HAND
 *
 *	@return		A #MESSAGE_BUS_RESULT describing the result of the function.
 */
-extern MESSAGE_BUS_RESULT MessageBus_AddModule(MESSAGE_BUS_HANDLE bus, MODULE_HANDLE module, const MODULE_APIS* module_apis);
+extern MESSAGE_BUS_RESULT MessageBus_AddModule(MESSAGE_BUS_HANDLE bus, const MODULE* module);
 
 /** @brief	Removes a module from the message bus.
 *

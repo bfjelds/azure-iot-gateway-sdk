@@ -11,17 +11,32 @@ namespace SetOfCsModules
     {
         public void Create(MessageBus bus, string configuration)
         {
-            throw new NotImplementedException();
+            System.Diagnostics.Debug.WriteLine("SetOfCsModules.Module2.Create");
         }
 
         public void Destroy()
         {
-            throw new NotImplementedException();
+            System.Diagnostics.Debug.WriteLine("SetOfCsModules.Module2.Destroy");
         }
 
-        public void Receive(Message received_message)
+        public void Receive(IModule source, Message received_message)
         {
-            throw new NotImplementedException();
+            string content = received_message.GetContent();
+            var props = received_message.GetProperties();
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append("SetOfCsModules.Module2.Receive: Content=" + content + "\r\n");
+            sb.Append("SetOfCsModules.Module2.Receive: Properties={");
+            foreach (var key in props.Keys)
+            {
+                sb.Append(key);
+                sb.Append("=");
+                sb.Append(props[key] as string);
+                sb.Append(", ");
+            }
+            sb.Append("}\r\n");
+
+            System.Diagnostics.Debug.WriteLine(sb.ToString());
         }
     }
 }

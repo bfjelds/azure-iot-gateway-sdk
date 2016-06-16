@@ -11,7 +11,7 @@ namespace IotCoreGatewayUtilitiesCpp
 	{
 		void Create(MessageBus^ bus, Platform::String ^configuration);
 		void Destroy();
-		void Receive(Message ^received_message);
+		void Receive(IModule^ source, Message ^received_message);
 	};
 };
 
