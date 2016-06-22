@@ -12,6 +12,6 @@ namespace IotCoreGatewayCpp
 
 	private:
 		Windows::ApplicationModel::Background::BackgroundTaskDeferral ^deferral;
-		IotCoreGatewayUtilitiesCpp::Gateway ^gateway;
+		Microsoft::Azure::IoT::Gateway::Gateway ^gateway;
     };
 }

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "MessageUwp.h"
 
-using namespace IotCoreGatewayUtilitiesCpp;
+using namespace Microsoft::Azure::IoT::Gateway;
 
 
 Message::Message(MESSAGE_HANDLE message_handle)

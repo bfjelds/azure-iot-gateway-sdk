@@ -1,0 +1,2 @@
+MainPackage=D:\git\azure-iot-gateway-sdk\uwp\IotCoreGatewayCpp\ARM\Debug\IotCoreGatewayCppUwp\IotCoreGatewayCppUwp_1.0.0.0_ARM_Debug.appx
+SymbolPackage=D:\git\azure-iot-gateway-sdk\uwp\IotCoreGatewayCpp\AppPackages\IotCoreGatewayCppUwp\IotCoreGatewayCppUwp_1.0.0.0_Debug_Test\IotCoreGatewayCppUwp_1.0.0.0_ARM_Debug.appxsym

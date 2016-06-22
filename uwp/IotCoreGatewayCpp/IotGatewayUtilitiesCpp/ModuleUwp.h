@@ -2,16 +2,17 @@
 
 #include "pch.h"
 
-namespace IotCoreGatewayUtilitiesCpp
-{
+namespace Microsoft { namespace Azure { namespace IoT { namespace Gateway {
+
 	ref class Message;
 	ref class MessageBus;
 
-	public interface class IModule
+	public interface class IGatewayModule
 	{
 		void Create(MessageBus^ bus, Platform::String ^configuration);
 		void Destroy();
-		void Receive(IModule^ source, Message ^received_message);
+		void Receive(IGatewayModule^ source, Message ^received_message);
 	};
-};
+
+}}}};
 

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IotCoreGatewayUtilitiesCpp;
+using Microsoft.Azure.IoT.Gateway;
 
 namespace SetOfCsModules
 {
-    public sealed class Module2 : IotCoreGatewayUtilitiesCpp.IModule
+    public sealed class Module2 : Microsoft.Azure.IoT.Gateway.IGatewayModule
     {
         public void Create(MessageBus bus, string configuration)
         {
@@ -19,7 +19,7 @@ namespace SetOfCsModules
             System.Diagnostics.Debug.WriteLine("SetOfCsModules.Module2.Destroy");
         }
 
-        public void Receive(IModule source, Message received_message)
+        public void Receive(IGatewayModule source, Message received_message)
         {
             string content = received_message.GetContent();
             var props = received_message.GetProperties();

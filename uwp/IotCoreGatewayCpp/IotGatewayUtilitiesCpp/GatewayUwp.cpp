@@ -5,27 +5,27 @@
 #include "MessageUwp.h"
 
 using namespace Windows::Foundation::Collections;
-using namespace IotCoreGatewayUtilitiesCpp;
+using namespace Microsoft::Azure::IoT::Gateway;
 
 
 ref class Message;
 
-void InternalModule::Module_Create(MESSAGE_BUS_HANDLE busHandle, const void* configuration)
+void InternalGatewayModule::Module_Create(MESSAGE_BUS_HANDLE busHandle, const void* configuration)
 {
 	_moduleImpl->Create(ref new MessageBus(busHandle), L"");
 }
-void InternalModule::Module_Destroy()
+void InternalGatewayModule::Module_Destroy()
 {
 	_moduleImpl->Destroy();
 }
-void InternalModule::Module_Receive(MODULE_HANDLE moduleHandle, MESSAGE_HANDLE messageHandle)
+void InternalGatewayModule::Module_Receive(MODULE_HANDLE moduleHandle, MESSAGE_HANDLE messageHandle)
 {
-	auto msg = ref new IotCoreGatewayUtilitiesCpp::Message(messageHandle);
-	IotCoreGatewayUtilitiesCpp::IModule^ mdl = nullptr;
+	auto msg = ref new Microsoft::Azure::IoT::Gateway::Message(messageHandle);
+	Microsoft::Azure::IoT::Gateway::IGatewayModule^ mdl = nullptr;
 	_moduleImpl->Receive(mdl, msg);
 }
 
-Gateway::Gateway(IVector<IModule^>^ modules)
+Gateway::Gateway(IVector<IGatewayModule^>^ modules)
 {
 	messagebus_handle = MessageBus_Create();
 
@@ -33,7 +33,7 @@ Gateway::Gateway(IVector<IModule^>^ modules)
 
 	for each (auto mod in modules)
 	{
-		InternalModule *imod = new InternalModule(mod);
+		InternalGatewayModule *imod = new InternalGatewayModule(mod);
 		imod->Module_Create(messagebus_handle, NULL);
 
 		MODULE_CPP_STYLE *cppModule = new MODULE_CPP_STYLE;

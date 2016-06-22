@@ -2,14 +2,14 @@
 
 namespace SetOfCppModules
 {
-	public ref class Module2 sealed : IotCoreGatewayUtilitiesCpp::IModule
+	public ref class Module2 sealed : Microsoft::Azure::IoT::Gateway::IGatewayModule
     {
     public:
 		Module2();
 
-		// Inherited via IModule
-		virtual void Create(IotCoreGatewayUtilitiesCpp::MessageBus ^bus, Platform::String ^configuration);
+		// Inherited via IGatewayModule
+		virtual void Create(Microsoft::Azure::IoT::Gateway::MessageBus ^bus, Platform::String ^configuration);
 		virtual void Destroy();
-		virtual void Receive(IotCoreGatewayUtilitiesCpp::IModule ^source, IotCoreGatewayUtilitiesCpp::Message ^received_message);
+		virtual void Receive(Microsoft::Azure::IoT::Gateway::IGatewayModule ^source, Microsoft::Azure::IoT::Gateway::Message ^received_message);
 	};
 }

@@ -184,7 +184,7 @@ static int module_publish_worker(void * user_data)
 
 						case MODERN_CPP_TYPE:
 							/*Codes_SRS_MESSAGE_BUS_13_092: [The function shall deliver the message to the module's callback function via module_info->module_apis. ]*/
-							((IGatewayModule*)((MODULE_CPP_STYLE*)module_info->module->module_data)->module_instance)->Module_Receive(((MODULE_HANDLE)((MODULE_CPP_STYLE*)module_info->module->module_data)->module_instance), msg);
+							((IInternalGatewayModule*)((MODULE_CPP_STYLE*)module_info->module->module_data)->module_instance)->Module_Receive(((MODULE_HANDLE)((MODULE_CPP_STYLE*)module_info->module->module_data)->module_instance), msg);
 							break;
 
 						}

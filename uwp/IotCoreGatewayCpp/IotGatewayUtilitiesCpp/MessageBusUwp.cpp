@@ -7,9 +7,9 @@
 #include "message_bus.h"
 
 using namespace Windows::Foundation::Collections;
-using namespace IotCoreGatewayUtilitiesCpp;
+using namespace Microsoft::Azure::IoT::Gateway;
 
-void MessageBus::Publish(IModule ^source, Message ^message)
+void MessageBus::Publish(IGatewayModule ^source, Message ^message)
 {
 	MODULE_HANDLE src = nullptr;
 	MESSAGE_HANDLE msg = message->MessageHandle;

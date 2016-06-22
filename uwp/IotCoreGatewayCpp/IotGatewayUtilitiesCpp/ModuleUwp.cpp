@@ -2,5 +2,5 @@
 
 #include "ModuleUwp.h"
 
-using namespace IotCoreGatewayUtilitiesCpp;
+using namespace Microsoft::Azure::IoT::Gateway;
 

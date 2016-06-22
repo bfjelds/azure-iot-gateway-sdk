@@ -117,7 +117,7 @@
   <ItemGroup>
     <ProjectReference Include="..\IotGatewayUtilitiesCpp\IotGatewayUtilitiesCpp.vcxproj">
       <Project>{73bc50be-df0f-4d95-8d15-5c5db4533801}</Project>
-      <Name>IotCoreGatewayUtilitiesCpp</Name>
+      <Name>Microsoft.Azure.IoT.Gateway</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

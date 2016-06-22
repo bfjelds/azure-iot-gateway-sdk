@@ -5,8 +5,8 @@
 #include "..\..\..\core\inc\message.h"
 
 
-namespace IotCoreGatewayUtilitiesCpp
-{
+namespace Microsoft { namespace Azure { namespace IoT { namespace Gateway {
+
 	public ref class Message sealed
 	{
 	internal:
@@ -27,5 +27,6 @@ namespace IotCoreGatewayUtilitiesCpp
 	private:
 		MESSAGE_HANDLE _message_handle;
 	};
-};
+
+}}}};
 

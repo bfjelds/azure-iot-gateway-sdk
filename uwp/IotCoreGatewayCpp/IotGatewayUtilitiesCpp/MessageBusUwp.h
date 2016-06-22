@@ -3,9 +3,9 @@
 #include "pch.h"
 #include "..\..\..\core\inc\message_bus.h"
 
-namespace IotCoreGatewayUtilitiesCpp
-{
-	interface class IModule;
+namespace Microsoft { namespace Azure { namespace IoT { namespace Gateway {
+
+	interface class IGatewayModule;
 	ref class Message;
 
 	public ref class MessageBus sealed
@@ -17,10 +17,10 @@ namespace IotCoreGatewayUtilitiesCpp
 		}
 
 	public:
-		void Publish(IModule ^source, Message ^message);
+		void Publish(IGatewayModule ^source, Message ^message);
 
 	private:
 		MESSAGE_BUS_HANDLE message_bus_handle;
 	};
-};
 
+}}}};

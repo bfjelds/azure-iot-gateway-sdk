@@ -21,6 +21,6 @@ namespace IotCoreGatewayCppUwp
 		void DoStuff();
 
 	private:
-		IotCoreGatewayUtilitiesCpp::Gateway^ gateway;
+		Microsoft::Azure::IoT::Gateway::Gateway^ gateway;
 	};
 }

@@ -132,7 +132,7 @@
   <ItemGroup>
     <ProjectReference Include="..\IotGatewayUtilitiesCpp\IotGatewayUtilitiesCpp.vcxproj">
       <Project>{73bc50be-df0f-4d95-8d15-5c5db4533801}</Project>
-      <Name>IotCoreGatewayUtilitiesCpp</Name>
+      <Name>Microsoft.Azure.IoT.Gateway</Name>
     </ProjectReference>
     <ProjectReference Include="..\SetOfCsModules\SetOfCsModules.csproj">
       <Project>{f85f97da-7339-4516-bc3b-7e0deebc2623}</Project>

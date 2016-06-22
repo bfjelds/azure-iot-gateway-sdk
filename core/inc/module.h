@@ -108,7 +108,7 @@ extern "C"
 		MODULE_HANDLE module_handle;
 	}MODULE_C_STYLE;
 
-	class IGatewayModule
+	class IInternalGatewayModule
 	{
 	public:
 		virtual void Module_Create(MESSAGE_BUS_HANDLE busHandle, const void* configuration) = 0;
@@ -122,7 +122,7 @@ extern "C"
 	*/
 	typedef struct MODULE_CPP_STYLE_TAG
 	{
-		const IGatewayModule* module_instance;
+		const IInternalGatewayModule* module_instance;
 	}MODULE_CPP_STYLE;
 
 	/** @brief	This is the only function exported by a module. Using the

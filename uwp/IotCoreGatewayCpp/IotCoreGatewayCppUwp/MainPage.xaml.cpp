@@ -31,8 +31,8 @@ MainPage::MainPage()
 
 void MainPage::DoStuff()
 {
-	Windows::Foundation::Collections::IVector<IotCoreGatewayUtilitiesCpp::IModule^>^ modules =
-		ref new Platform::Collections::Vector<IotCoreGatewayUtilitiesCpp::IModule^>();
+	auto modules =
+		ref new Platform::Collections::Vector<Microsoft::Azure::IoT::Gateway::IGatewayModule^>();
 	modules->Append(ref new SetOfCsModules::Module2());
 	modules->Append(ref new SetOfCsModules::Module1());
 	modules->Append(ref new SetOfCsModules::Module3());
@@ -40,5 +40,5 @@ void MainPage::DoStuff()
 	modules->Append(ref new SetOfCppModules::Module1());
 	modules->Append(ref new SetOfCppModules::Module3());
 
-	gateway = ref new IotCoreGatewayUtilitiesCpp::Gateway(modules);
+	gateway = ref new Microsoft::Azure::IoT::Gateway::Gateway(modules);
 }

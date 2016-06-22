@@ -12,17 +12,17 @@ namespace IotCoreGatewayCs
     public sealed class StartupTask : IBackgroundTask
     {
         BackgroundTaskDeferral deferral;
-        IotCoreGatewayUtilitiesCpp.Gateway gateway;
+        Microsoft.Azure.IoT.Gateway.Gateway gateway;
         public void Run(IBackgroundTaskInstance taskInstance)
         {
             deferral = taskInstance.GetDeferral();
 
-            IList<IotCoreGatewayUtilitiesCpp.IModule> modules = new List<IotCoreGatewayUtilitiesCpp.IModule>();
+            var modules = new List<Microsoft.Azure.IoT.Gateway.IGatewayModule>();
             modules.Add(new SetOfCsModules.Module2());
             modules.Add(new SetOfCsModules.Module1());
             modules.Add(new SetOfCsModules.Module3());
 
-            gateway = new IotCoreGatewayUtilitiesCpp.Gateway(modules);
+            gateway = new Microsoft.Azure.IoT.Gateway.Gateway(modules);
         }
     }
 }

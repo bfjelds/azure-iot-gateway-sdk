@@ -8,7 +8,7 @@ Module3::Module3()
 {
 }
 
-void SetOfCppModules::Module3::Create(IotCoreGatewayUtilitiesCpp::MessageBus ^bus, Platform::String ^configuration)
+void SetOfCppModules::Module3::Create(Microsoft::Azure::IoT::Gateway::MessageBus ^bus, Platform::String ^configuration)
 {
 	std::wstring formattedText = L"SetOfCppModules::Module3::Create\r\n";
 	OutputDebugString(formattedText.c_str());
@@ -20,7 +20,7 @@ void SetOfCppModules::Module3::Destroy()
 	OutputDebugString(formattedText.c_str());
 }
 
-void SetOfCppModules::Module3::Receive(IotCoreGatewayUtilitiesCpp::IModule ^source, IotCoreGatewayUtilitiesCpp::Message ^received_message)
+void SetOfCppModules::Module3::Receive(Microsoft::Azure::IoT::Gateway::IGatewayModule ^source, Microsoft::Azure::IoT::Gateway::Message ^received_message)
 {
 	std::wstring content = received_message->GetContent()->Data();
 	auto props = received_message->GetProperties();
