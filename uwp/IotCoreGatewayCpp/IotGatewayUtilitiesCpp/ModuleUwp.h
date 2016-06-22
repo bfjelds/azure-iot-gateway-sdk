@@ -11,7 +11,7 @@ namespace Microsoft { namespace Azure { namespace IoT { namespace Gateway {
 	{
 		void Create(MessageBus^ bus, Platform::String ^configuration);
 		void Destroy();
-		void Receive(IGatewayModule^ source, Message ^received_message);
+		void Receive(Message ^received_message);
 	};
 
 }}}};

@@ -19,7 +19,7 @@ namespace SetOfCsModules
             System.Diagnostics.Debug.WriteLine("SetOfCsModules.Module1.Destroy");
         }
 
-        public void Receive(IGatewayModule source, Message received_message)
+        public void Receive(Message received_message)
         {
             string content = received_message.GetContent();
             var props = received_message.GetProperties();

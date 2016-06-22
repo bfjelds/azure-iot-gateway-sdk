@@ -21,8 +21,7 @@ void InternalGatewayModule::Module_Destroy()
 void InternalGatewayModule::Module_Receive(MODULE_HANDLE moduleHandle, MESSAGE_HANDLE messageHandle)
 {
 	auto msg = ref new Microsoft::Azure::IoT::Gateway::Message(messageHandle);
-	Microsoft::Azure::IoT::Gateway::IGatewayModule^ mdl = nullptr;
-	_moduleImpl->Receive(mdl, msg);
+	_moduleImpl->Receive(msg);
 }
 
 Gateway::Gateway(IVector<IGatewayModule^>^ modules)

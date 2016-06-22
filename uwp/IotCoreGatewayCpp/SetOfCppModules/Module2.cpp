@@ -20,7 +20,7 @@ void SetOfCppModules::Module2::Destroy()
 	OutputDebugString(formattedText.c_str());
 }
 
-void SetOfCppModules::Module2::Receive(Microsoft::Azure::IoT::Gateway::IGatewayModule ^source, Microsoft::Azure::IoT::Gateway::Message ^received_message)
+void SetOfCppModules::Module2::Receive(Microsoft::Azure::IoT::Gateway::Message ^received_message)
 {
 	std::wstring content = received_message->GetContent()->Data();
 	auto props = received_message->GetProperties();
