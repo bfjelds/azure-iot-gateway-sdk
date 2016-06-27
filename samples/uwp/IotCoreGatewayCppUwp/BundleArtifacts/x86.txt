@@ -1,0 +1,2 @@
+MainPackage=D:\git\azure-iot-gateway-sdk\uwp\IotCoreGatewayCpp\Release\IotCoreGatewayCppUwp\IotCoreGatewayCppUwp_1.0.0.0_Win32.appx
+SymbolPackage=D:\git\azure-iot-gateway-sdk\uwp\IotCoreGatewayCpp\AppPackages\IotCoreGatewayCppUwp\IotCoreGatewayCppUwp_1.0.0.0_Test\IotCoreGatewayCppUwp_1.0.0.0_Win32.appxsym

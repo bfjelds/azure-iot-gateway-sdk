@@ -37,12 +37,7 @@ typedef struct MESSAGE_BUS_MODULEINFO_TAG
     /**
     * Handle to the module that's connected to the bus.
     */
-    MODULE_HANDLE             module;
-
-    /**
-    * The function dispatch table for this module.
-    */
-    const MODULE_APIS*        module_apis;
+	const MODULE*             module;
 
     /**
     * Handle to the thread on which this module's message processing loop is
@@ -180,8 +175,22 @@ static int module_publish_worker(void * user_data)
                     }
                     else
                     {
-                        /*Codes_SRS_MESSAGE_BUS_13_092: [The function shall deliver the message to the module's callback function via module_info->module_apis. ]*/
-                        module_info->module_apis->Module_Receive(module_info->module, msg);
+						switch (module_info->module->module_type)
+						{
+						case NATIVE_C_TYPE:
+							/*Codes_SRS_MESSAGE_BUS_13_092: [The function shall deliver the message to the module's callback function via module_info->module_apis. ]*/
+							((MODULE_C_STYLE*)module_info->module->module_data)->module_apis->Module_Receive(((MODULE_C_STYLE*)module_info->module->module_data)->module_handle, msg);
+							break;
+
+#ifdef UWP_BINDING
+
+						case MODERN_CPP_TYPE:
+							/*Codes_SRS_MESSAGE_BUS_13_092: [The function shall deliver the message to the module's Receive function via the IInternalGatewayModule interface. ]*/
+							((IInternalGatewayModule*)((MODULE_CPP_STYLE*)module_info->module->module_data)->module_instance)->Module_Receive(((MODULE_HANDLE)((MODULE_CPP_STYLE*)module_info->module->module_data)->module_instance), msg);
+							break;
+
+#endif // UWP_BINDING
+						}
 
                         /*Codes_SRS_MESSAGE_BUS_13_093: [The function shall destroy the message that was dequeued by calling Message_Destroy.]*/
                         Message_Destroy(msg);
@@ -214,15 +223,12 @@ static int module_publish_worker(void * user_data)
     return 0;
 }
 
-static MESSAGE_BUS_RESULT init_module(MESSAGE_BUS_MODULEINFO* module_info, MODULE_HANDLE module, const MODULE_APIS* module_apis)
+static MESSAGE_BUS_RESULT init_module(MESSAGE_BUS_MODULEINFO* module_info, const MODULE* module)
 {
     MESSAGE_BUS_RESULT result;
 
     /*Codes_SRS_MESSAGE_BUS_13_107: The function shall assign the `module` handle to `MESSAGE_BUS_MODULEINFO::module`.*/
     module_info->module = module;
-
-    /*Codes_SRS_MESSAGE_BUS_13_097: [The function shall assign module_apis to MESSAGE_BUS_MODULEINFO::module_apis.]*/
-    module_info->module_apis = module_apis;
 
     /*Codes_SRS_MESSAGE_BUS_13_098: [The function shall initialize MESSAGE_BUS_MODULEINFO::mq with a valid vector handle.]*/
     module_info->mq = VECTOR_create(sizeof(MESSAGE_HANDLE));
@@ -351,12 +357,12 @@ static int stop_module(MESSAGE_BUS_MODULEINFO* module_info)
     return result;
 }
 
-MESSAGE_BUS_RESULT MessageBus_AddModule(MESSAGE_BUS_HANDLE bus, MODULE_HANDLE module, const MODULE_APIS* module_apis)
+MESSAGE_BUS_RESULT MessageBus_AddModule(MESSAGE_BUS_HANDLE bus, const MODULE* module)
 {
     MESSAGE_BUS_RESULT result;
 
     /*Codes_SRS_MESSAGE_BUS_13_038: [If `bus` or `module` or `module_apis` is NULL the function shall return MESSAGE_BUS_INVALIDARG.]*/
-    if (bus == NULL || module == NULL || module_apis == NULL)
+	if (bus == NULL || module == NULL || module->module_data == NULL)
     {
         result = MESSAGE_BUS_INVALIDARG;
         LogError("invalid parameter (NULL).");
@@ -371,7 +377,7 @@ MESSAGE_BUS_RESULT MessageBus_AddModule(MESSAGE_BUS_HANDLE bus, MODULE_HANDLE mo
         }
         else
         {
-            if (init_module(module_info, module, module_apis) != MESSAGE_BUS_OK)
+			if (init_module(module_info, module) != MESSAGE_BUS_OK)
             {
                 /*Codes_SRS_MESSAGE_BUS_13_047: [This function shall return MESSAGE_BUS_ERROR if an underlying API call to the platform causes an error or MESSAGE_BUS_OK otherwise.]*/
                 LogError("start_module failed");
